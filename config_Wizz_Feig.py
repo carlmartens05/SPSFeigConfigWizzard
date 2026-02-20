@@ -41,7 +41,6 @@ def as_menu():
     Geeft True terug als parameters zijn toegevoegd, False als gebruiker terug wilt.
     """
     while True:
-        afsluiting = "as"  # voor duidelijkheid in sub-menu's
         as_PLC = input("Wordt de slagboom aangestuurd door een PLC  of is deze standalone (PLC/standalone)? (typ 'terug' om terug te gaan) ").lower()
         if as_PLC == "plc":
             return as_PLC_menu()  # Ga naar sub-menu PLC keuzes
@@ -61,7 +60,6 @@ def as_PLC_menu():
     Geeft True terug als parameters zijn toegevoegd, False als gebruiker terug wilt.
     """
     while True:
-        afsluiting = "as"  # voor duidelijkheid in sub-menu's
         print("Moet nog gebouwd worden, gebruik je verstand! as_PLC_menu")
         input("Druk op Enter om af te sluiten.")
         return False  # terug naar hoofdmenu
@@ -72,7 +70,6 @@ def as_standalone_menu():
     Geeft True terug als parameters zijn toegevoegd, False als gebruiker terug wilt.
     """
     while True:
-        afsluiting = "as"  # voor duidelijkheid in sub-menu's
         as_auto_sluittijd = input("wil je de autosluittijd aanpassen (y/n)? (typ 'terug' om terug te gaan) ").lower()
         if as_auto_sluittijd == "y":
             return auto_sluittijd_menu()  # Ga naar sub-menu autosluittijd keuzes
@@ -91,7 +88,6 @@ def sg_menu():
     Geeft True terug als parameters zijn toegevoegd, False als gebruiker terug wilt.
     """
     while True:
-        afsluiting = "sg"  # voor duidelijkheid in sub-menu's
         sg_PLC = input("Wordt de speedgate aangestuurd door een PLC (y/n)? (typ 'terug' om terug te gaan) ").lower()
         if sg_PLC == "y":
             # Voeg parameters toe
@@ -124,44 +120,132 @@ def sg_menu():
 
 def ohd_menu():
     """
-    Submenu voor slagboom.
+    Submenu voor overheaddeur.
     Geeft True terug als parameters zijn toegevoegd, False als gebruiker terug wilt.
     """
     while True:
-        afsluiting = "ohd"  # voor duidelijkheid in sub-menu's
-        print("Moet nog gebouwd worden, gebruik je verstand!")
-        input("Druk op Enter om af te sluiten.")
-        return False  # terug naar hoofdmenu
+        OHD_motor_instellingen = input("wil je de motor instellingen aanpassen (y/n)? (typ 'terug' om terug te gaan) ").lower()
+        if OHD_motor_instellingen == "y":
+            motor_instelling_menu()  # Ga naar sub-menu motor instellingen keuzes
+            auto_sluittijd_input = input("wil je de autosluittijd aanpassen (y/n)? (typ 'terug' om terug te gaan) ").lower()
+            if auto_sluittijd_input == "y":
+                auto_sluittijd_menu()  # Ga naar sub-menu autosluittijd keuzes
+            return True
+        elif OHD_motor_instellingen == "n":
+            auto_sluittijd_input = input("wil je de autosluittijd aanpassen (y/n)? (typ 'terug' om terug te gaan) ").lower()
+            if auto_sluittijd_input == "y":
+                auto_sluittijd_menu()  # Ga naar sub-menu autosluittijd keuzes
+            else:
+                return False  # klaar, naar hoofdmenu
+        elif OHD_motor_instellingen == "terug":
+            print("Terug naar hoofdmenu...")
+            return False  # terug naar hoofdmenu
 
 
 # submenu's voor specifieke keuzes
 
 
 def auto_sluittijd_menu():
-    """
-    Submenu voor slagboom auto sluittijden.
-    Geeft True terug als parameters zijn toegevoegd, False als gebruiker terug wilt.
-    """
+    """Submenu voor auto sluittijden."""
+    
+    # P.010
     while True:
-        auto_sluittijd_0010 = input("Wat is de gewenste auto sluittijd voor geheel open (p.010) in seconden? gebruik deze parameter voor de slagbomen. (typ 'terug' om terug te gaan) ").lower()
-        if auto_sluittijd_0010.isdigit() and 0 <= int(auto_sluittijd_0010) <= 200:
-            parameters.append(("0010", auto_sluittijd_0010))  # Voeg parameter toe
-        elif auto_sluittijd_0010 == "":
-            print("instelling overslaan, doorgaan naar volgende parameter...")
+        invoer = input("Auto sluittijd geheel open (p.010, gebruiken bij slagbomen, Enter = overslaan, 'terug' = menu): ").lower()
+        if invoer == "terug":
+            return False
+        elif invoer == "":
+            break
+        elif invoer.isdigit() and 0 <= int(invoer) <= 200:
+            parameters.append(("0010", invoer))
+            break
+        else:
+            print("Ongeldige invoer.")
 
-        auto_sluittijd_0011 = input("Wat is de gewenste auto sluittijd voor half open (p.011) in seconden? te gebruiken voor speedgates (typ 'terug' om terug te gaan) ").lower()
-        if auto_sluittijd_0011.isdigit() and 0 <= int(auto_sluittijd_0011) <= 200:
-            parameters.append(("0011", auto_sluittijd_0011))  # Voeg parameter toe
-        elif auto_sluittijd_0011 == "":
-             print("instelling overslaan, doorgaan naar volgende parameter...")
+    # P.011
+    while True:
+        invoer = input("Auto sluittijd half open (p.011, gebruiken bij speedgates, Enter = overslaan, 'terug' = menu): ").lower()
+        if invoer == "terug":
+            return False
+        elif invoer == "":
+            break
+        elif invoer.isdigit() and 0 <= int(invoer) <= 200:
+            parameters.append(("0011", invoer))
+            break
+        else:
+            print("Ongeldige invoer.")
 
-        auto_sluittijd_0012 = input("Wat is de gewenste auto sluittijd voor geforceerde sluittijd (p.012) in seconden? te gebruiken voor OHD en speedgates (voor slagbomen gebruik P.010)  (typ 'terug' om terug te gaan) ").lower()
-        if auto_sluittijd_0012.isdigit() and 0 <= int(auto_sluittijd_0012) <= 200:
-            parameters.append(("0012", auto_sluittijd_0012))  # Voeg parameter toe
-            return True  # klaar, doorgaan
-        elif auto_sluittijd_0012 == "terug":
-            print("Terug naar hoofdmenu...")
-            return False  # terug naar hoofdmenu
+    # P.012
+    while True:
+        invoer = input("Geforceerde sluittijd (p.012, gebruiken bij speedgates en overheaddeuren,  Enter = overslaan, 'terug' = menu): ").lower()
+        if invoer == "terug":
+            return False
+        elif invoer == "":
+            break
+        elif invoer.isdigit() and 0 <= int(invoer) <= 200:
+            parameters.append(("0012", invoer))
+            break
+        else:
+            print("Ongeldige invoer.")
+
+    return True # klaar, doorgaan
+
+def motor_instelling_menu():
+    """Submenu voor motor instellingen."""
+
+    # Frequentie
+    while True:
+        invoer = input("Frequentie motor (p.100, in Hz, Enter = overslaan, 'terug' = menu): ").lower()
+        if invoer == "terug":
+            return False
+        elif invoer == "":
+            break
+        elif invoer.isdigit() and 0 <= int(invoer) <= 200:
+            parameters.append(("0100", invoer))
+            break
+        else:
+            print("Ongeldige invoer.")
+
+    # Amperage
+    while True:
+        invoer = input("Amperage motor (p.101, in Ampere, laat de punt weg, dus 2.1A = 21, Enter = overslaan, 'terug' = menu): ").lower()
+        if invoer == "terug":
+            return False
+        elif invoer == "":
+            break
+        elif invoer.isdigit() and 0 <= int(invoer) <= 45:
+            parameters.append(("0101", invoer))
+            break
+        else:
+            print("Ongeldige invoer.")
+
+    # Cos phi
+    while True:
+        invoer = input("Cos phi motor (p.102, in graden, Enter = overslaan, 'terug' = menu): ").lower()
+        if invoer == "terug":
+            return False
+        elif invoer == "":
+            break
+        elif invoer.isdigit() and 0 <= int(invoer) <= 200:
+            parameters.append(("0102", invoer))
+            break
+        else:
+            print("Ongeldige invoer.")
+
+    # Voltage
+    while True:
+        invoer = input("Voltage motor (p.103, in Volt, Enter = overslaan, 'terug' = menu): ").lower()
+        if invoer == "terug":
+            return False
+        elif invoer == "":
+            break
+        elif invoer.isdigit():
+            parameters.append(("0103", invoer))
+            break
+        else:
+            print("Ongeldige invoer.")
+
+    return True # klaar, doorgaan
+
 
 def vraag_bestandsnaam():
     bestandsnaam_input = input(
