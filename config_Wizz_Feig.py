@@ -343,30 +343,39 @@ def vraag_bestandsnaam():
 def maak_xml(bestandsnaam, afkorting, projectnummer, parameters):
     vandaag = date.today().strftime("%Y-%m-%d")
 
-    # Voeg projectnummer toe aan bestandsnaam
-    if projectnummer:
-        volledige_bestandsnaam = f"{bestandsnaam}_{projectnummer}_{vandaag}.xml"
-    else:
-        volledige_bestandsnaam = f"{bestandsnaam}_{vandaag}.xml"
+    # Bereken maximale lengte van ncode voor nette uitlijning
+    max_ncode_len = max(len(code) for code, _ in parameters)
 
-    xml = [
+    # Begin van XML
+    xml_lines = [
         '<?xml version="1.0" encoding="iso-8859-1" standalone="yes"?>',
         f'<parameterlist version="none" editor="{afkorting}" serial="{projectnummer}" date="{vandaag}">'
     ]
 
+    # Voeg parameters toe met nette uitlijning
     for code, waarde in parameters:
-        xml.append(f'    <parameter ncode="{code}" pdef="{waarde}" />')
+        # Zorg dat ncode altijd dezelfde breedte krijgt
+        code_padded = code.ljust(max_ncode_len)
+        xml_lines.append(f'    <parameter ncode="{code_padded}" pdef="{waarde}" />')
 
-    xml.append('</parameterlist>')
+    # Sluit de parameterlist
+    xml_lines.append('</parameterlist>')
 
-    pad = os.path.join(os.path.expanduser(
-        "~"), "Downloads", volledige_bestandsnaam)
+    # Bestandslocatie
+    pad = os.path.join(
+        os.path.expanduser("~"),
+        "Downloads",
+        f"{bestandsnaam}_{projectnummer}_{vandaag}.xml" if projectnummer else f"{bestandsnaam}_{vandaag}.xml"
+    )
 
+    # Schrijf bestand
     with open(pad, "w", encoding="iso-8859-1") as f:
-        f.write("\n".join(xml))
+        f.write("\n".join(xml_lines))
 
     print("\n✅ XML opgeslagen in Downloads:")
     print(pad)
+    print("\nDruk op Enter om af te sluiten...")
+    input()
 
 # ======================
 # Programma start
