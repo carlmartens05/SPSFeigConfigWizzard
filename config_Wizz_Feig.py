@@ -3,289 +3,270 @@ import os
 
 parameters = []
 
-def wizard():
-    """
-    Volledige wizard met loop en sub-menu's.
-     - Hoofdmenu: keuze tussen AS, SG, OHD
-    """
-    while True:  # hoofdloop van wizard
-        # --- Hoofdmenu ---
-        afsluiting = input("Op welk soort afsluiting zit de besturing aangesloten? (as/sg/ohd) ").lower()
 
-        if afsluiting == "as":
-            # Ga naar sub-menu AS
-            if not as_menu():
-                continue  # gebruiker koos 'terug', ga opnieuw naar hoofdmenu
-            break  # AS keuze voltooid, ga door naar bestandsnaam
-            return  # stopt wizard
-        elif afsluiting == "sg":
-            # Ga naar sub-menu SG
-            if not sg_menu():
-                continue  # gebruiker koos 'terug', ga opnieuw naar hoofdmenu
-            break  # SG keuze voltooid, ga door naar bestandsnaam
-        elif afsluiting == "ohd":
-             # Ga naar sub-menu OHD
-            if not ohd_menu():
-                continue  # gebruiker koos 'terug', ga opnieuw naar hoofdmenu
-            break  # OHD keuze voltooid, ga door naar bestandsnaam
-            return  # stopt wizard  
+# ======================
+# Helper functies
+# ======================
+
+def vraag_ja_nee(vraag):
+    while True:
+        keuze = input(vraag).lower()
+        if keuze in ("y", "n"):
+            return keuze == "y"
+        if keuze == "terug":
+            return None
+        print("Ongeldige invoer.")
+
+
+def vraag_getal(vraag):
+    while True:
+        invoer = input(vraag + " (Enter = overslaan): ").lower()
+        if invoer == "":
+            return None
+        if invoer.isdigit():
+            return invoer
+        print("Ongeldige invoer.")
+
+
+# ======================
+# Hoofd wizard
+# ======================
+
+def wizard():
+    global parameters
+    parameters.clear()
+
+    while True:
+        afsluiting = input(
+            "Op welk soort afsluiting zit de besturing aangesloten? (as/sg/ohd) "
+        ).lower()
+
+        if afsluiting == "as" and as_menu():
+            break
+        elif afsluiting == "sg" and sg_menu():
+            break
+        elif afsluiting == "ohd" and ohd_menu():
+            break
         else:
             print("Ongeldige invoer, probeer opnieuw.")
 
-# --- Sub-menu's voor specifieke afsluitingen ---
-# - - - slagbomen - - - 
+
+# ======================
+# Slagbomen
+# ======================
 
 def as_menu():
-    """
-    Submenu voor slagboom.
-    Geeft True terug als parameters zijn toegevoegd, False als gebruiker terug wilt.
-    """
     while True:
-        as_PLC = input("Wordt de slagboom aangestuurd door een PLC  of is deze standalone (PLC/standalone)? (typ 'terug' om terug te gaan) ").lower()
-        if as_PLC == "plc":
-            return as_PLC_menu()  # Ga naar sub-menu PLC keuzes
-        elif as_PLC == "standalone":
-            return as_standalone_menu()  # Ga naar sub-menu standalone keuzes
-        elif as_PLC == "terug":
-            print("Terug naar hoofdmenu...")
-            return False  # terug naar hoofdmenu
-        else:
-            print("Moet nog gebouwd worden, gebruik je verstand!")
-            input("Druk op Enter om af te sluiten.")
-            return False  # terug naar hoofdmenu
+        keuze = input(
+            "Wordt de slagboom aangestuurd door een PLC of standalone (plc/standalone)? "
+        ).lower()
 
-def as_PLC_menu():
-    """
-    Submenu voor slagboom met PLC.
-    Geeft True terug als parameters zijn toegevoegd, False als gebruiker terug wilt.
-    """
-    while True:
-        print("Moet nog gebouwd worden, gebruik je verstand! as_PLC_menu")
-        input("Druk op Enter om af te sluiten.")
-        return False  # terug naar hoofdmenu
+        if keuze == "plc":
+            print("PLC modus nog niet geïmplementeerd.")
+            return False
+        elif keuze == "standalone":
+            return as_standalone_menu()
+        elif keuze == "terug":
+            return False
+        else:
+            print("Ongeldige invoer.")
+
 
 def as_standalone_menu():
-    """
-    Submenu voor slagboom met PLC.
-    Geeft True terug als parameters zijn toegevoegd, False als gebruiker terug wilt.
-    """
-    while True:
-        as_auto_sluittijd = input("wil je de autosluittijd aanpassen (y/n)? (typ 'terug' om terug te gaan) ").lower()
-        if as_auto_sluittijd == "y":
-            return auto_sluittijd_menu()  # Ga naar sub-menu autosluittijd keuzes
-            return True  # klaar, doorgaan
-        elif as_auto_sluittijd == "n":
-            return False  # klaar, naar hoofdmenu
-        elif as_auto_sluittijd == "terug":
-            print("Terug naar hoofdmenu...")
-            return False  # terug naar hoofdmenu
+    keuze = vraag_ja_nee("Autosluittijd aanpassen? (y/n) ")
+    if keuze is None:
+        return False
+    if keuze:
+        auto_sluittijd_menu("as")
 
-# - - - speedgates - - -
+    keuze = vraag_ja_nee("Zelftest instellen? (y/n) ")
+    if keuze is None:
+        return False
+    if keuze:
+        zelftest_menu("as")
+
+    keuze = vraag_ja_nee("Verkeerslichtsturing instellen? (y/n) ")
+    if keuze is None:
+        return False
+    if keuze:
+        verkeerslichten_menu("as")
+
+    return True
+
+
+# ======================
+# Speedgates
+# ======================
 
 def sg_menu():
-    """
-    Submenu voor Speedgate PLC keuzes.
-    Geeft True terug als parameters zijn toegevoegd, False als gebruiker terug wilt.
-    """
     while True:
-        sg_PLC = input("Wordt de speedgate aangestuurd door een PLC (y/n)? (typ 'terug' om terug te gaan) ").lower()
-        if sg_PLC == "y":
-            # Voeg parameters toe
-            parameters.append(("0501", "0101"))
-            parameters.append(("0502", "0401"))
-            parameters.append(("0522", "1"))
-            parameters.append(("0503", "0701"))
-            parameters.append(("0010", "0"))
-            parameters.append(("0011", "0"))
-            parameters.append(("0012", "0"))
-            parameters.append(("08ba", "4"))
-            parameters.append(("0890", "0"))
-            return True  # klaar, doorgaan
-        elif sg_PLC == "n":
-            as_auto_sluittijd = input("wil je de autosluittijd aanpassen (y/n)? (typ 'terug' om terug te gaan) ").lower()
-            if as_auto_sluittijd == "y":
-                return auto_sluittijd_menu()  # Ga naar sub-menu autosluittijd keuzes
-            elif as_auto_sluittijd == "n":
-                return False  # klaar, naar hoofdmenu
-            elif as_auto_sluittijd == "terug":
-                print("Terug naar hoofdmenu...")
-                return False  # terug naar hoofdmenu
-        elif sg_PLC == "terug":
-            print("Terug naar hoofdmenu...")
-            return False  # terug naar hoofdmenu
-        else:
-            print("Ongeldige invoer, probeer opnieuw.")
+        sg_plc = input(
+            "Wordt de speedgate aangestuurd door een PLC (y/n)? "
+        ).lower()
 
-# - - - Overheaddeur - - -
+        if sg_plc == "y":
+            parameters.extend([
+                ("0501", "0101"),
+                ("0502", "0401"),
+                ("0522", "1"),
+                ("0503", "0701"),
+                ("0010", "0"),
+                ("0011", "0"),
+                ("0012", "0"),
+                ("08BA", "4"),
+                ("0890", "0"),
+            ])
+            return True
+
+        elif sg_plc == "n":
+            keuze = vraag_ja_nee("Autosluittijd aanpassen? (y/n) ")
+            if keuze is None:
+                return False
+            if keuze:
+                auto_sluittijd_menu("sg")
+            return True
+
+        elif sg_plc == "terug":
+            return False
+        else:
+            print("Ongeldige invoer.")
+
+
+# ======================
+# Overheaddeuren
+# ======================
 
 def ohd_menu():
-    """
-    Submenu voor overheaddeur.
-    Geeft True terug als parameters zijn toegevoegd, False als gebruiker terug wilt.
-    """
-    while True:
-        OHD_motor_instellingen = input("wil je de motor instellingen aanpassen (y/n)? (typ 'terug' om terug te gaan) ").lower()
-        if OHD_motor_instellingen == "y":
-            motor_instelling_menu()  # Ga naar sub-menu motor instellingen keuzes
-            auto_sluittijd_input = input("wil je de autosluittijd aanpassen (y/n)? (typ 'terug' om terug te gaan) ").lower()
-            if auto_sluittijd_input == "y":
-                auto_sluittijd_menu()  # Ga naar sub-menu autosluittijd keuzes
-            return True
-        elif OHD_motor_instellingen == "n":
-            auto_sluittijd_input = input("wil je de autosluittijd aanpassen (y/n)? (typ 'terug' om terug te gaan) ").lower()
-            if auto_sluittijd_input == "y":
-                auto_sluittijd_menu()  # Ga naar sub-menu autosluittijd keuzes
-            else:
-                return False  # klaar, naar hoofdmenu
-        elif OHD_motor_instellingen == "terug":
-            print("Terug naar hoofdmenu...")
-            return False  # terug naar hoofdmenu
+    keuze = vraag_ja_nee("Motor instellingen aanpassen? (y/n) ")
+    if keuze:
+        motor_instelling_menu()
+
+    keuze = vraag_ja_nee("Autosluittijd aanpassen? (y/n) ")
+    if keuze:
+        auto_sluittijd_menu("ohd")
+
+    keuze = vraag_ja_nee("Verkeerslichtsturing instellen? (y/n) ")
+    if keuze:
+        verkeerslichten_menu("ohd")
+
+    return True
 
 
-# submenu's voor specifieke keuzes
+# ======================
+# Submenu's
+# ======================
 
+def auto_sluittijd_menu(type_afsluiting):
+    if type_afsluiting == "as":
+        waarde = vraag_getal("Auto sluittijd geheel open (P.010)")
+        if waarde is not None:
+            parameters.append(("0010", waarde))
 
-def auto_sluittijd_menu():
-    """Submenu voor auto sluittijden."""
-    
-    # P.010
-    while True:
-        invoer = input("Auto sluittijd geheel open (p.010, gebruiken bij slagbomen, Enter = overslaan, 'terug' = menu): ").lower()
-        if invoer == "terug":
-            return False
-        elif invoer == "":
-            break
-        elif invoer.isdigit() and 0 <= int(invoer) <= 200:
-            parameters.append(("0010", invoer))
-            break
-        else:
-            print("Ongeldige invoer.")
+    if type_afsluiting == "sg":
+        waarde = vraag_getal("Auto sluittijd half open (P.011)")
+        if waarde is not None:
+            parameters.append(("0011", waarde))
 
-    # P.011
-    while True:
-        invoer = input("Auto sluittijd half open (p.011, gebruiken bij speedgates, Enter = overslaan, 'terug' = menu): ").lower()
-        if invoer == "terug":
-            return False
-        elif invoer == "":
-            break
-        elif invoer.isdigit() and 0 <= int(invoer) <= 200:
-            parameters.append(("0011", invoer))
-            break
-        else:
-            print("Ongeldige invoer.")
+    if type_afsluiting in ("sg", "ohd"):
+        waarde = vraag_getal("Geforceerde sluittijd (P.012)")
+        if waarde is not None:
+            parameters.append(("0012", waarde))
 
-    # P.012
-    while True:
-        invoer = input("Geforceerde sluittijd (p.012, gebruiken bij speedgates en overheaddeuren,  Enter = overslaan, 'terug' = menu): ").lower()
-        if invoer == "terug":
-            return False
-        elif invoer == "":
-            break
-        elif invoer.isdigit() and 0 <= int(invoer) <= 200:
-            parameters.append(("0012", invoer))
-            break
-        else:
-            print("Ongeldige invoer.")
-
-    return True # klaar, doorgaan
 
 def motor_instelling_menu():
-    """Submenu voor motor instellingen."""
+    freq = vraag_getal("Frequentie motor (P.100 Hz)")
+    if freq is not None:
+        parameters.append(("0100", freq))
 
-    # Frequentie
-    while True:
-        invoer = input("Frequentie motor (p.100, in Hz, Enter = overslaan, 'terug' = menu): ").lower()
-        if invoer == "terug":
-            return False
-        elif invoer == "":
-            break
-        elif invoer.isdigit() and 0 <= int(invoer) <= 200:
-            parameters.append(("0100", invoer))
-            break
-        else:
-            print("Ongeldige invoer.")
+    amp = vraag_getal("Amperage motor (P.101) laat de punt weg dus 2.1A = 21")
+    if amp is not None:
+        parameters.append(("0101", amp))
 
-    # Amperage
-    while True:
-        invoer = input("Amperage motor (p.101, in Ampere, laat de punt weg, dus 2.1A = 21, Enter = overslaan, 'terug' = menu): ").lower()
-        if invoer == "terug":
-            return False
-        elif invoer == "":
-            break
-        elif invoer.isdigit() and 0 <= int(invoer) <= 45:
-            parameters.append(("0101", invoer))
-            break
-        else:
-            print("Ongeldige invoer.")
+    cosphi = vraag_getal("Cos phi motor (P.102)")
+    if cosphi is not None:
+        parameters.append(("0102", cosphi))
 
-    # Cos phi
-    while True:
-        invoer = input("Cos phi motor (p.102, in graden, Enter = overslaan, 'terug' = menu): ").lower()
-        if invoer == "terug":
-            return False
-        elif invoer == "":
-            break
-        elif invoer.isdigit() and 0 <= int(invoer) <= 200:
-            parameters.append(("0102", invoer))
-            break
-        else:
-            print("Ongeldige invoer.")
+    volt = vraag_getal("Voltage motor (P.103)")
+    if volt is not None:
+        parameters.append(("0103", volt))
 
-    # Voltage
-    while True:
-        invoer = input("Voltage motor (p.103, in Volt, Enter = overslaan, 'terug' = menu): ").lower()
-        if invoer == "terug":
-            return False
-        elif invoer == "":
-            break
-        elif invoer.isdigit():
-            parameters.append(("0103", invoer))
-            break
-        else:
-            print("Ongeldige invoer.")
 
-    return True # klaar, doorgaan
+def zelftest_menu(type_afsluiting):
+    if type_afsluiting in ("as", "ohd"):
+        inputnr = vraag_getal("Welke input wil je zelftesten? output 15 wordt standaard gebruikt als testoutput.")
+        if inputnr:
+            parameters.append((f"05{inputnr}A", "1"))
+            parameters.append(("070f", "2501"))
+            print(f"Input {inputnr} wordt getest.")
 
+
+def verkeerslichten_menu(type_afsluiting):
+    print("Standaard verkeerslichtsturing toegevoegd. K1 voor VKL buiten en K2 voor VKL binnen. rood op NC en groen op NO.")
+
+    if type_afsluiting == "as":
+        parameters.extend([
+            ("0701", "1210"),
+            ("0702", "1201"),
+            ("0716", "2"),
+            ("0719", "5"),
+            ("071f", "19"),
+            ("0726", "0"),
+            ("0729", "5"),
+            ("072f", "19"),
+        ])
+
+    elif type_afsluiting == "ohd":
+        parameters.extend([
+            ("0701", "1210"),
+            ("0702", "1201"),
+            ("0716", "2"),
+            ("0719", "2"),
+            ("071f", "19"),
+            ("0726", "0"),
+            ("0729", "2"),
+            ("072f", "19"),
+        ])
+
+
+# ======================
+# XML generatie
+# ======================
 
 def vraag_bestandsnaam():
-    bestandsnaam_input = input(
-        "Hoe moet het bestand heten? (de datum is al standaard toegevoegd)\n"
-        "dit bestand wordt automatisch opgeslagen in je Downloads-map.\n"
-        "(zonder .xml, Enter = 'parameters'): "
-    ).strip()
-    if bestandsnaam_input == "":
-        bestandsnaam_input = "parameters"
-    return bestandsnaam_input
+    naam = input("Bestandsnaam (Enter = parameters): ").strip()
+    return naam or "parameters"
 
-def maak_xml(bestandsnaam_input):
+
+def maak_xml(bestandsnaam):
     vandaag = date.today().strftime("%Y-%m-%d")
 
-    xml_lines = [
+    xml = [
         '<?xml version="1.0" encoding="iso-8859-1" standalone="yes"?>',
-        f'<parameterlist version="none" editor="configwizardFeig" serial="" date="{vandaag}">'
+        f'<parameterlist date="{vandaag}">'
     ]
 
-    for ncode, waarde in parameters:
-        xml_lines.append(f'    <parameter ncode="{ncode}" pdef="{waarde}" />')
+    for code, waarde in parameters:
+        xml.append(f'    <parameter ncode="{code}" pdef="{waarde}" />')
 
-    xml_lines.append('</parameterlist>')
+    xml.append('</parameterlist>')
 
-    downloads_map = os.path.join(os.path.expanduser("~"), "Downloads")
-    bestand_naam = f"{bestandsnaam_input}_{vandaag}.xml"
-    bestand_pad = os.path.join(downloads_map, bestand_naam)
+    pad = os.path.join(os.path.expanduser("~"), "Downloads",
+                       f"{bestandsnaam}_{vandaag}.xml")
 
-    with open(bestand_pad, "w", encoding="iso-8859-1") as file:
-        file.write("\n".join(xml_lines))
+    with open(pad, "w", encoding="iso-8859-1") as f:
+        f.write("\n".join(xml))
 
-    print("\n✅ XML opgeslagen in:")
-    print(bestand_pad)
-    print("\nXML bestand succesvol aangemaakt en correct afgesloten.")
+    print(f"\n✅ XML opgeslagen: {pad}")
 
 
-# === Programma start hier ===
+# ======================
+# Start programma
+# ======================
+
 print("=== Config Wizard Feig besturingen V1.0 CMA 2026 ===\n")
+
 if __name__ == "__main__":
-    wizard()  # start wizard
-    if parameters:  # alleen doorgaan als er parameters zijn toegevoegd
-        bestandsnaam = vraag_bestandsnaam()
-        maak_xml(bestandsnaam)
+    wizard()
+    if parameters:
+        naam = vraag_bestandsnaam()
+        maak_xml(naam)
