@@ -39,7 +39,7 @@ def wizard():
         afsluiting = input(
             """
         ====================================================================
-        ===   SPS Feig config wizard V0.1  made by CMA powered by AI     ===
+        ===   SPS Feig config wizard V0.1.2  made by CMA powered by AI   ===
         ====================================================================
 
         Op welk soort afsluiting zit de besturing aangesloten? (as/sg/ohd)
@@ -51,6 +51,8 @@ def wizard():
         elif afsluiting == "sg" and sg_menu():
             break
         elif afsluiting == "ohd" and ohd_menu():
+            break
+        elif afsluiting == "adv" and advanced_menu():
             break
         else:
             print("Ongeldige invoer, probeer opnieuw.")
@@ -109,15 +111,16 @@ def as_plc_menu():
     if keuze_node:
         node_id_menu()
 
+    keuze_bmi = vraag_ja_nee("BMI instellen? (y/n) ")
+    if keuze_bmi is None:
+        return False
+    if keuze_bmi:
+        BMI_menu()
+
     return True
 
 
 def as_standalone_menu():
-    keuze = vraag_ja_nee("Autosluittijd aanpassen? (y/n) ")
-    if keuze is None:
-        return False
-    if keuze:
-        auto_sluittijd_menu("as")
 
     keuze = vraag_ja_nee("Zelftest instellen? (y/n) ")
     if keuze is None:
@@ -125,23 +128,41 @@ def as_standalone_menu():
     if keuze:
         zelftest_menu("as")
 
-    keuze = vraag_ja_nee("Verkeerslichtsturing instellen? (y/n) ")
-    if keuze is None:
+    keuze_vkl = vraag_ja_nee("Verkeerslichtsturing instellen? (y/n) ")
+    if keuze_vkl is None:
         return False
-    if keuze:
+    if keuze_vkl:
         verkeerslichten_menu("as")
-
-    keuze = vraag_ja_nee("Hellingbaan regeling instellen? (y/n) ")
-    if keuze is None:
-        return False
-    if keuze:
-        heling_baan_regeling_menu()
+        keuze_hellingbaan = vraag_ja_nee(
+            "Hellingbaan regeling instellen? (y/n) ")
+        if keuze_hellingbaan is None:
+            return False
+        if keuze:
+            heling_baan_regeling_menu()
+        if not keuze_hellingbaan:
+            keuze = vraag_ja_nee("Autosluittijd aanpassen? (y/n) ")
+            if keuze is None:
+                return False
+            if keuze:
+                auto_sluittijd_menu("as")
+    if not keuze_vkl:
+        keuze = vraag_ja_nee("Autosluittijd aanpassen? (y/n) ")
+        if keuze is None:
+            return False
+        if keuze:
+            auto_sluittijd_menu("as")
 
     keuze = vraag_ja_nee("Node ID instellen voor PXS Feig koppeling? (y/n) ")
     if keuze is None:
         return False
     if keuze:
         node_id_menu()
+
+    keuze_bmi = vraag_ja_nee("BMI instellen? (y/n) ")
+    if keuze_bmi is None:
+        return False
+    if keuze_bmi:
+        BMI_menu()
 
     return True
 
@@ -173,28 +194,40 @@ def sg_menu():
                 return False
             if keuze:
                 node_id_menu()
+
+            keuze_bmi = vraag_ja_nee("BMI instellen? (y/n) ")
+            if keuze_bmi is None:
+                return False
+            if keuze_bmi:
+                BMI_menu()
             return True
 
         elif sg_plc == "n":
-            keuze = vraag_ja_nee("Autosluittijd aanpassen? (y/n) ")
-            if keuze is None:
+            keuze_hellingbaan = vraag_ja_nee(
+                "Hellingbaan regeling instellen? (y/n) ")
+            if keuze_hellingbaan is None:
                 return False
-            if keuze:
-                auto_sluittijd_menu("sg")
+            if keuze_hellingbaan:
+                heling_baan_regeling_menu()
+            if not keuze_hellingbaan:
+                keuze = vraag_ja_nee("Autosluittijd aanpassen? (y/n) ")
+                if keuze is None:
+                    return False
+                if keuze:
+                    auto_sluittijd_menu("sg")
 
             keuze_node = vraag_ja_nee(
                 "Node ID instellen voor PXS Feig koppeling? (y/n) ")
-            if keuze is None:
+            if keuze_node is None:
                 return False
             if keuze_node:
                 node_id_menu()
 
-            keuze = vraag_ja_nee("Hellingbaan regeling instellen? (y/n) ")
-            if keuze is None:
+            keuze_bmi = vraag_ja_nee("BMI instellen? (y/n) ")
+            if keuze_bmi is None:
                 return False
-            if keuze:
-                heling_baan_regeling_menu()
-
+            if keuze_bmi:
+                BMI_menu()
             return True
 
         elif sg_plc == "terug":
@@ -215,17 +248,29 @@ def ohd_menu():
     if keuze:
         motor_instelling_menu()
 
-    keuze = vraag_ja_nee("Autosluittijd aanpassen? (y/n) ")
-    if keuze is None:
-        return False
-    if keuze:
-        auto_sluittijd_menu("ohd")
-
-    keuze = vraag_ja_nee("Verkeerslichtsturing instellen? (y/n) ")
-    if keuze is None:
+    keuze_vkl = vraag_ja_nee("Verkeerslichtsturing instellen? (y/n) ")
+    if keuze_vkl is None:
         return False
     if keuze:
         verkeerslichten_menu("ohd")
+        keuze_hellingbaan = vraag_ja_nee(
+            "Hellingbaan regeling instellen? (y/n) ")
+        if keuze_hellingbaan is None:
+            return False
+        if keuze_hellingbaan:
+            heling_baan_regeling_menu()
+        if not keuze_hellingbaan:
+            keuze = vraag_ja_nee("Autosluittijd aanpassen? (y/n) ")
+            if keuze is None:
+                return False
+            if keuze:
+                auto_sluittijd_menu("ohd")
+    if not keuze_vkl:
+        keuze = vraag_ja_nee("Autosluittijd aanpassen? (y/n) ")
+        if keuze is None:
+            return False
+        if keuze:
+            auto_sluittijd_menu("ohd")
 
     keuze = vraag_ja_nee("Node ID instellen voor PXS Feig koppeling? (y/n) ")
     if keuze is None:
@@ -233,13 +278,24 @@ def ohd_menu():
     if keuze:
         node_id_menu()
 
-    keuze = vraag_ja_nee("Hellingbaan regeling instellen? (y/n) ")
-    if keuze is None:
+    keuze_bmi = vraag_ja_nee("BMI instellen? (y/n) ")
+    if keuze_bmi is None:
         return False
-    if keuze:
-        heling_baan_regeling_menu()
+    if keuze_bmi:
+        BMI_menu()
 
     return True
+
+# ======================
+# advanced menu voor handmatige submenu's en parameters
+# ======================
+
+
+def advanced_menu():
+    pass
+#
+# gereserveerde ruimte
+#
 
 # ======================
 # Submenu's
@@ -328,19 +384,19 @@ def node_id_menu():
         parameters.append(("08ba", node_id))
 
 
-def heling_baan_regeling_menu(type_afsluiting):
-    helling_minimale_groentijd = vraag_getal("""
-minimal greentime (P.017): wat is de minimale tijd dat het groene verkeerslicht aan moet blijven staan zonder dat er een voertuig door de afsluiting is gereden. 
-                                             """)
+def heling_baan_regeling_menu():
+    helling_minimale_groentijd = vraag_getal(
+        "minimal greentime (P.017): wat is de minimale tijd dat het groene verkeerslicht aan moet blijven staan zonder dat er een voertuig door de afsluiting is gereden, voordat deze omschakeld naar de andere zijde.")
     if helling_minimale_groentijd is not None:
         parameters.append(("0017", helling_minimale_groentijd))
 
-    hellingbaan_roodtijd = vraag_getal("""Waiting-time between changing green-direction(P.01a): de tijd dat beide verkeerslichten op rood staan en dus de tijd dat het voertuig nodig heeft om de gehele afstand naar het andere verkeerslicht af te leggen.
-                                       """)
+    hellingbaan_roodtijd = vraag_getal(
+        "Waiting-time between changing green-direction(P.01a): de tijd dat beide verkeerslichten op rood staan en dus de tijd dat het voertuig nodig heeft om de gehele afstand naar het andere verkeerslicht af te leggen.")
     if hellingbaan_roodtijd is not None:
         parameters.append(("001a", hellingbaan_roodtijd))
-    
-     geforceerde_sluittijd = vraag_getal("geforceerde sluittijd (P.012): voor de hellingbaanregeling moet de geforceerde sluittijd in worden gesteld, houd rekening met de lengte van de hellingbaan. in de regel is de waarde van p.01a + 30sec een goede maatstaf om mee te beginnen.   ")
+
+    geforceerde_sluittijd = vraag_getal(
+        "geforceerde sluittijd (P.012): voor de hellingbaanregeling moet de geforceerde sluittijd in worden gesteld, houd rekening met de lengte van de hellingbaan. in de regel is de waarde van p.01a + 30sec een goede maatstaf om mee te beginnen.   ")
     if geforceerde_sluittijd is not None:
         parameters.append(("0012", geforceerde_sluittijd))
 
@@ -351,17 +407,49 @@ minimal greentime (P.017): wat is de minimale tijd dat het groene verkeerslicht 
 
 
 def loopsnelheden_OHD_menu():
-    #nog implenteren
+    pass
+    # nog implenteren
 
 
 def loopsnelheden_SG_menu():
-
+    pass
     # nog implementeren, controleren of deze ook kunnen worden ingesteld via het OHD menu
 
-def BMI_menu():
-    # nog implementeren
 
-   
+def BMI_menu():
+    input_bmi = vraag_getal(
+        'op welke input van de besturing zit de BMI aangesloten? standaard = 6, enter = 6')
+    if input_bmi is None or input_bmi == "":
+        input_bmi = "6"
+        parameters.append(("0506", "165"))
+    elif input_bmi is not None:
+        parameters.append((f"050{input_bmi}", "165"))
+    print(f'input {input_bmi} wordt gebruikt voor BMI.')
+    eindstand_bmi = vraag_getal(
+        'naar welke positie moet de afsluiting bewegen bij een BMI melding? 0 = open 1 = dicht')
+    if eindstand_bmi == "0":
+        parameters.append((f"05{input_bmi}0", "1"))
+        parameters.append((f"05{input_bmi}1", "18"))
+        parameters.append((f"05{input_bmi}3", "0"))
+        parameters.append((f"05{input_bmi}4", "1"))
+        vkl_bmi = vraag_getal(
+            "wat moeten de verkeerslichten doen bij een BMI melding? 0 = beide rood, 1= buiten groen , 2 = binnen groen 3 = beide groen")
+        if vkl_bmi is not None:
+            parameters.append((f"05{input_bmi}6", vkl_bmi))
+
+    elif eindstand_bmi == "1":
+        parameters.append((f"05{input_bmi}0", "8"))
+        parameters.append((f"05{input_bmi}1", "1"))
+        parameters.append((f"05{input_bmi}3", "3"))
+        print("de afsluiting zal sluiten bij een BMI melding. verkeerslichten blijven op rood staan.")
+
+    no_nc_bmi = vraag_getal(
+        ' is de BMI een maak of een verbreek contact? maak = 0, verbreek = 1, enter = verbreek ')
+    if no_nc_bmi is None or no_nc_bmi == "":
+        parameters.append((f"05{input_bmi}2", "1"))
+        print("de BMI is ingesteld als verbreek contact.")
+    elif no_nc_bmi is not None:
+        parameters.append((f"05{input_bmi}2", no_nc_bmi))
 
 
 # ======================
