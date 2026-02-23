@@ -356,7 +356,8 @@ def maak_xml(bestandsnaam, afkorting, projectnummer, parameters):
     for code, waarde in parameters:
         # Zorg dat ncode altijd dezelfde breedte krijgt
         code_padded = code.ljust(max_ncode_len)
-        xml_lines.append(f'    <parameter ncode="{code_padded}" pdef="{waarde}" />')
+        xml_lines.append(
+            f'    <parameter ncode="{code_padded}" pdef="{waarde}" />')
 
     # Sluit de parameterlist
     xml_lines.append('</parameterlist>')

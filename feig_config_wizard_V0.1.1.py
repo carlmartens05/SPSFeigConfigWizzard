@@ -131,6 +131,12 @@ def as_standalone_menu():
     if keuze:
         verkeerslichten_menu("as")
 
+    keuze = vraag_ja_nee("Hellingbaan regeling instellen? (y/n) ")
+    if keuze is None:
+        return False
+    if keuze:
+        heling_baan_regeling_menu()
+
     keuze = vraag_ja_nee("Node ID instellen voor PXS Feig koppeling? (y/n) ")
     if keuze is None:
         return False
@@ -163,6 +169,8 @@ def sg_menu():
             ])
             keuze = vraag_ja_nee(
                 "Node ID instellen voor PXS Feig koppeling? (y/n) ")
+            if keuze is None:
+                return False
             if keuze:
                 node_id_menu()
             return True
@@ -176,8 +184,16 @@ def sg_menu():
 
             keuze_node = vraag_ja_nee(
                 "Node ID instellen voor PXS Feig koppeling? (y/n) ")
+            if keuze is None:
+                return False
             if keuze_node:
                 node_id_menu()
+
+            keuze = vraag_ja_nee("Hellingbaan regeling instellen? (y/n) ")
+            if keuze is None:
+                return False
+            if keuze:
+                heling_baan_regeling_menu()
 
             return True
 
@@ -194,20 +210,34 @@ def sg_menu():
 
 def ohd_menu():
     keuze = vraag_ja_nee("Motor instellingen aanpassen? (y/n) ")
+    if keuze is None:
+        return False
     if keuze:
         motor_instelling_menu()
 
     keuze = vraag_ja_nee("Autosluittijd aanpassen? (y/n) ")
+    if keuze is None:
+        return False
     if keuze:
         auto_sluittijd_menu("ohd")
 
     keuze = vraag_ja_nee("Verkeerslichtsturing instellen? (y/n) ")
+    if keuze is None:
+        return False
     if keuze:
         verkeerslichten_menu("ohd")
 
     keuze = vraag_ja_nee("Node ID instellen voor PXS Feig koppeling? (y/n) ")
+    if keuze is None:
+        return False
     if keuze:
         node_id_menu()
+
+    keuze = vraag_ja_nee("Hellingbaan regeling instellen? (y/n) ")
+    if keuze is None:
+        return False
+    if keuze:
+        heling_baan_regeling_menu()
 
     return True
 
@@ -297,6 +327,43 @@ def node_id_menu():
     if node_id is not None:
         parameters.append(("08ba", node_id))
 
+
+def heling_baan_regeling_menu(type_afsluiting):
+    helling_minimale_groentijd = vraag_getal("""
+minimal greentime (P.017): wat is de minimale tijd dat het groene verkeerslicht aan moet blijven staan zonder dat er een voertuig door de afsluiting is gereden. 
+                                             """)
+    if helling_minimale_groentijd is not None:
+        parameters.append(("0017", helling_minimale_groentijd))
+
+    hellingbaan_roodtijd = vraag_getal("""Waiting-time between changing green-direction(P.01a): de tijd dat beide verkeerslichten op rood staan en dus de tijd dat het voertuig nodig heeft om de gehele afstand naar het andere verkeerslicht af te leggen.
+                                       """)
+    if hellingbaan_roodtijd is not None:
+        parameters.append(("001a", hellingbaan_roodtijd))
+    
+     geforceerde_sluittijd = vraag_getal("geforceerde sluittijd (P.012): voor de hellingbaanregeling moet de geforceerde sluittijd in worden gesteld, houd rekening met de lengte van de hellingbaan. in de regel is de waarde van p.01a + 30sec een goede maatstaf om mee te beginnen.   ")
+    if geforceerde_sluittijd is not None:
+        parameters.append(("0012", geforceerde_sluittijd))
+
+    hellingbaan_voorkeur_richting = vraag_getal("""voorkeursrichting (P.891): welke richting heeft de voorkeur bij het wisselen van zijde? 1 = inrijden/Trapeziumzijde, 2 = uitrijden/rechthoekzijde, 0 = geen voorkeur
+                                            """)
+    if hellingbaan_voorkeur_richting is not None:
+        parameters.append(("0891", hellingbaan_voorkeur_richting))
+
+
+def loopsnelheden_OHD_menu():
+    #nog implenteren
+
+
+def loopsnelheden_SG_menu():
+
+    # nog implementeren, controleren of deze ook kunnen worden ingesteld via het OHD menu
+
+def BMI_menu():
+    # nog implementeren
+
+   
+
+
 # ======================
 # Invoerfuncties
 # ======================
@@ -305,7 +372,7 @@ def node_id_menu():
 def vraag_afkorting():
     while True:
         afkorting = input(
-            "Wat is je naamafkorting? (bijv. CMA, Enter = FCW (config_wizard_Feig)): ").strip().lower()
+            "Wat is je naamafkorting? (bijv. CMA, Enter = FCW (Feig_config_Wizard)): ").strip().lower()
         if afkorting == "":
             return "fcw"
         if not afkorting.isalpha():
@@ -349,6 +416,9 @@ def vraag_bestandsnaam():
 def maak_xml(bestandsnaam, afkorting, projectnummer, parameters):
     vandaag = date.today().strftime("%Y-%m-%d")
 
+    # schrijf projectnummer naar P.927
+    parameters.append(("0927", projectnummer))
+
     # Bereken maximale lengte van ncode voor nette uitlijning
     max_ncode_len = max(len(code) for code, _ in parameters)
 
@@ -362,7 +432,8 @@ def maak_xml(bestandsnaam, afkorting, projectnummer, parameters):
     for code, waarde in parameters:
         # Zorg dat ncode altijd dezelfde breedte krijgt
         code_padded = code.ljust(max_ncode_len)
-        xml_lines.append(f'    <parameter ncode="{code_padded}" pdef="{waarde}" />')
+        xml_lines.append(
+            f'    <parameter ncode="{code_padded}" pdef="{waarde}" />')
 
     # Sluit de parameterlist
     xml_lines.append('</parameterlist>')
@@ -377,12 +448,7 @@ def maak_xml(bestandsnaam, afkorting, projectnummer, parameters):
     # Schrijf bestand
     with open(pad, "w", encoding="iso-8859-1") as f:
         f.write("\n".join(xml_lines))
-        
-    # schrijf projectnummer naar P.927
-    
-    parameters.append(("0927", "{projectnummer}"))
 
-    
     print("\n XML opgeslagen in Downloads:")
     print(pad)
     print("\nDruk op Enter om af te sluiten...")
