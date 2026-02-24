@@ -27,6 +27,14 @@ def vraag_getal(vraag):
             return invoer
         print("Ongeldige invoer.")
 
+
+def vraag_tekst(vraag):
+    while True:
+        invoer = input(vraag).strip()
+        if invoer == "":
+            return None
+        return invoer
+
 # ======================
 # Hoofd wizard
 # ======================
@@ -39,7 +47,7 @@ def wizard():
         afsluiting = input(
             """
         ====================================================================
-        ===   SPS Feig config wizard V0.1.2  made by CMA powered by AI   ===
+        ===   SPS Feig config wizard V0.1.3  made by CMA powered by AI   ===
         ====================================================================
 
         Op welk soort afsluiting zit de besturing aangesloten? (as/sg/ohd)
@@ -52,7 +60,7 @@ def wizard():
             break
         elif afsluiting == "ohd" and ohd_menu():
             break
-        elif afsluiting == "adv" and advanced_menu():
+        elif afsluiting == "adv" and advanced_menu("adv"):
             break
         else:
             print("Ongeldige invoer, probeer opnieuw.")
@@ -65,7 +73,7 @@ def wizard():
 def as_menu():
     while True:
         waarde = vraag_getal(
-            'welk profiel heeft de slagboom volgens de sticker op de besturing? (zie de handleiding van Bormet voor meer info)').lower()
+            'welk profiel heeft de slagboom volgens de sticker op de besturing? (zie de handleiding van Bormet voor meer info)')
         if waarde is not None:
             parameters.append(("0991", waarde))
 
@@ -137,7 +145,7 @@ def as_standalone_menu():
             "Hellingbaan regeling instellen? (y/n) ")
         if keuze_hellingbaan is None:
             return False
-        if keuze:
+        if keuze_hellingbaan:
             heling_baan_regeling_menu()
         if not keuze_hellingbaan:
             keuze = vraag_ja_nee("Autosluittijd aanpassen? (y/n) ")
@@ -291,29 +299,80 @@ def ohd_menu():
 # ======================
 
 
-def advanced_menu():
-    pass
-#
-# gereserveerde ruimte
-#
+def advanced_menu(afsluiting):
+    keuze = vraag_getal("""
+        welkom in het geavenceerde menu, hier kan je handmatig naar submenu's van de wizard zonder de rest te doorlopen. 
+        ook kan je handmatig parameters toevoegen.
+        keuzes: 
+        1 = submenu's
+        2 = handmatig parameters toevoegen
+        """)
+    if keuze == "1":
+        while True:
+            submenu_keuze = vraag_tekst("""
+                ===== welk submenu wil je doorlopen? ===== 
+                1 = autosluittijd 
+                2 = motor instellingen 
+                3 = zelftest 
+                4 = verkeerslichten 
+                5 = node id voor PXS Feig koppeling 
+                6 = hellingbaan regeling
+                7 = BMI instellingen
+                klaar = klaar met configureren en maak bestand aan. 
+                terug = terug naar adv. menu. 
+                (enter = terug naar hoofdmenu)
+                """)
+            if submenu_keuze == "1":
+                auto_sluittijd_menu(afsluiting)
+            elif submenu_keuze == "2":
+                motor_instelling_menu()
+            elif submenu_keuze == "3":
+                zelftest_menu(afsluiting)
+            elif submenu_keuze == "4":
+                verkeerslichten_menu(afsluiting)
+            elif submenu_keuze == "5":
+                node_id_menu()
+            elif submenu_keuze == "6":
+                heling_baan_regeling_menu()
+            elif submenu_keuze == "7":
+                BMI_menu()
+            elif submenu_keuze == "klaar":
+                return True
+            elif submenu_keuze == "terug":
+                advanced_menu(afsluiting)
+            elif submenu_keuze is None or submenu_keuze == "":
+                return False
+            else:
+                print("Ongeldige keuze.")
+    elif keuze == "2":
+        while True:
+            ncode = input(
+                "Voer het parameternummer in van de parameter die je wilt toevoegen. (van de parameter alles na de ' p. ' dus p.xxx vul xxx in.) als je klaar ben geen dan niks in en druk op enter. (Enter = klaar): ").strip()
+            if ncode is None or ncode == "":
+                print("Handmatige parameter invoer beëindigd.")
+                return True
+            waarde = input("Voer de waarde in voor deze parameter: ").strip()
+            parameters.append((ncode, waarde))
+            print(f"Parameter p.{ncode} met waarde {waarde} toegevoegd.")
+
 
 # ======================
 # Submenu's
 # ======================
 
 
-def auto_sluittijd_menu(type_afsluiting):
-    if type_afsluiting == "as":
+def auto_sluittijd_menu(afsluiting):
+    if afsluiting in ("as", "adv"):
         waarde = vraag_getal("Auto sluittijd geheel open (P.010)")
         if waarde is not None:
             parameters.append(("0010", waarde))
 
-    if type_afsluiting == "sg":
+    if afsluiting in ("sg", "adv"):
         waarde = vraag_getal("Auto sluittijd half open (P.011)")
         if waarde is not None:
             parameters.append(("0011", waarde))
 
-    if type_afsluiting in ("sg", "ohd"):
+    if afsluiting in ("sg", "ohd", "adv"):
         waarde = vraag_getal("Geforceerde sluittijd (P.012)")
         if waarde is not None:
             parameters.append(("0012", waarde))
@@ -337,8 +396,8 @@ def motor_instelling_menu():
         parameters.append(("0103", volt))
 
 
-def zelftest_menu(type_afsluiting):
-    if type_afsluiting in ("as", "ohd"):
+def zelftest_menu(afsluiting):
+    if afsluiting in ("as", "ohd", "adv"):
         inputnr = vraag_getal(
             "Welke input wil je zelftesten? output 15 wordt standaard gebruikt als testoutput.")
         if inputnr:
@@ -347,13 +406,13 @@ def zelftest_menu(type_afsluiting):
             print(f"Input {inputnr} wordt getest.")
             keuze = vraag_ja_nee("Wil je nog een input testen? (y/n) ")
             if keuze:
-                return zelftest_menu(type_afsluiting)
+                return zelftest_menu(afsluiting)
 
 
-def verkeerslichten_menu(type_afsluiting):
+def verkeerslichten_menu(afsluiting):
     print("Standaard verkeerslichtsturing toegevoegd. K1 voor VKL buiten en K2 voor VKL binnen. rood op NC en groen op NO.")
 
-    if type_afsluiting == "as":
+    if afsluiting in ("as", "adv"):
         parameters.extend([
             ("0701", "1210"),
             ("0702", "1201"),
@@ -364,7 +423,7 @@ def verkeerslichten_menu(type_afsluiting):
             ("0729", "5"),
             ("072f", "19"),
         ])
-    elif type_afsluiting == "ohd":
+    elif afsluiting == "ohd":
         parameters.extend([
             ("0701", "1210"),
             ("0702", "1201"),
@@ -555,6 +614,5 @@ if __name__ == "__main__":
         projectnummer = vraag_projectnummer()
         bestandsnaam = vraag_bestandsnaam()
         maak_xml(bestandsnaam, afkorting, projectnummer, parameters)
-        parameters.append(("0927", "{projectnummer}"))
     else:
         print("Geen parameters ingevoerd, XML wordt niet aangemaakt.")
