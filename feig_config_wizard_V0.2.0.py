@@ -1,7 +1,8 @@
 from datetime import date
 import os
 
-parameters = []
+hoofd_parameter = []
+sub_parameter = []
 
 # ======================
 # Helper functies
@@ -35,19 +36,34 @@ def vraag_tekst(vraag):
             return None
         return invoer
 
+
+def sorteer_parameters(param_list):
+    """
+    Sorteert parameters alfabetisch,
+    maar zorgt dat parameter p.991 altijd bovenaan staat, voor het laden bij een slagboom vereist.
+    """
+    def sort_key(item):
+        code = item[0].lower()
+        if code == "0991":
+            return ("", "")  # komt vóór alles
+        return ("1", code)
+
+    return sorted(param_list, key=sort_key)
+
 # ======================
 # Hoofd wizard
 # ======================
 
 
 def wizard():
-    global parameters
-    parameters.clear()
+    global hoofd_parameter, sub_parameter
+    hoofd_parameter.clear()
+    sub_parameter.clear()
     while True:
         afsluiting = input(
             """
         ====================================================================
-        ===   SPS Feig config wizard V0.1.4  made by CMA powered by AI   ===
+        ===   SPS Feig config wizard V0.2.0  made by CMA powered by AI   ===
         ====================================================================
 
         Op welk soort afsluiting zit de besturing aangesloten? (as/sg/ohd)
@@ -75,7 +91,7 @@ def as_menu():
         waarde = vraag_getal(
             'welk profiel heeft de slagboom volgens de sticker op de besturing? (zie de handleiding van Bormet voor meer info)')
         if waarde is not None:
-            parameters.append(("0991", waarde))
+            hoofd_parameter.append(("0991", waarde))
 
         keuze = input(
             "Wordt de slagboom aangestuurd door een PLC of standalone (PLC = open/dicht/stop, plc maar geen open/dicht/stop? kies standalone.) (plc/standalone)? "
@@ -93,13 +109,15 @@ def as_menu():
 
 def as_plc_menu():
     # Voeg standaard parameters toe
-    parameters.extend([
-        ("0010", "0"),
-        ("002a", "0"),
-        ("04b7", "0"),
+    hoofd_parameter.extend([
         ("0505", "1401"),
         ("0701", "0101"),
         ("0702", "0201"),
+    ])
+    sub_parameter.extend([
+        ("0010", "0"),
+        ("002a", "0"),
+        ("04b7", "0"),
         ("0890", "0"),
     ])
     print("Parameters voor open/dicht/stop toegevoegd voor slagboom met PLC.")
@@ -185,11 +203,14 @@ def sg_menu():
             "Wordt de speedgate aangestuurd door een PLC (y/n)? plc maar geen open/dicht/stop? kies nee").lower()
 
         if sg_plc == "y":
-            parameters.extend([
+            hoofd_parameter.extend([
                 ("0501", "0101"),
                 ("0502", "0401"),
-                ("0522", "1"),
                 ("0503", "0701"),
+            ])
+            sub_parameter.extend([
+
+                ("0522", "1"),
                 ("0010", "0"),
                 ("0011", "0"),
                 ("0012", "0"),
@@ -362,7 +383,7 @@ def advanced_menu(afsluiting):
                 print("Handmatige parameter invoer beëindigd.")
                 return True
             waarde = input("Voer de waarde in voor deze parameter: ").strip()
-            parameters.append((ncode, waarde))
+            sub_parameter.append((ncode, waarde))
             print(f"Parameter p.{ncode} met waarde {waarde} toegevoegd.")
 
 
@@ -375,35 +396,35 @@ def auto_sluittijd_menu(afsluiting):
     if afsluiting in ("as", "adv"):
         waarde = vraag_getal("Auto sluittijd geheel open (P.010)")
         if waarde is not None:
-            parameters.append(("0010", waarde))
+            sub_parameter.append(("0010", waarde))
 
     if afsluiting in ("sg", "adv"):
         waarde = vraag_getal("Auto sluittijd half open (P.011)")
         if waarde is not None:
-            parameters.append(("0011", waarde))
+            sub_parameter.append(("0011", waarde))
 
     if afsluiting in ("sg", "ohd", "adv"):
         waarde = vraag_getal("Geforceerde sluittijd (P.012)")
         if waarde is not None:
-            parameters.append(("0012", waarde))
+            sub_parameter.append(("0012", waarde))
 
 
 def motor_instelling_menu():
     freq = vraag_getal("Frequentie motor (P.100 Hz)")
     if freq is not None:
-        parameters.append(("0100", freq))
+        sub_parameter.append(("0100", freq))
 
     amp = vraag_getal("Amperage motor (P.101) laat de punt weg dus 2.1A = 21")
     if amp is not None:
-        parameters.append(("0101", amp))
+        sub_parameter.append(("0101", amp))
 
     cosphi = vraag_getal("Cos phi motor (P.102)")
     if cosphi is not None:
-        parameters.append(("0102", cosphi))
+        sub_parameter.append(("0102", cosphi))
 
     volt = vraag_getal("Voltage motor (P.103)")
     if volt is not None:
-        parameters.append(("0103", volt))
+        sub_parameter.append(("0103", volt))
 
 
 def zelftest_menu(afsluiting):
@@ -411,8 +432,8 @@ def zelftest_menu(afsluiting):
         inputnr = vraag_getal(
             "Welke input wil je zelftesten? output 15 wordt standaard gebruikt als testoutput.")
         if inputnr:
-            parameters.append((f"05{inputnr}A", "1"))
-            parameters.append(("070f", "2501"))
+            sub_parameter.append((f"05{inputnr}A", "1"))
+            hoofd_parameter.append(("070f", "2501"))
             print(f"Input {inputnr} wordt getest.")
             keuze = vraag_ja_nee("Wil je nog een input testen? (y/n) ")
             if keuze:
@@ -423,9 +444,11 @@ def verkeerslichten_menu(afsluiting):
     print("Standaard verkeerslichtsturing toegevoegd. K1 voor VKL buiten en K2 voor VKL binnen. rood op NC en groen op NO.")
 
     if afsluiting in ("as", "adv"):
-        parameters.extend([
+        hoofd_parameter.extend([
             ("0701", "1210"),
             ("0702", "1201"),
+        ])
+        sub_parameter.extend([
             ("0716", "2"),
             ("0719", "5"),
             ("071f", "19"),
@@ -435,9 +458,11 @@ def verkeerslichten_menu(afsluiting):
         ])
 
     if afsluiting in ("ohd"):
-        parameters.extend([
+        hoofd_parameter.extend([
             ("0701", "1210"),
             ("0702", "1201"),
+        ])
+        sub_parameter.extend([
             ("0716", "2"),
             ("0719", "2"),
             ("071f", "19"),
@@ -451,38 +476,38 @@ def node_id_menu():
     node_id = vraag_getal(
         "Wat is de Node ID van de besturing? T.B.V. de PXS Feig koppeling (P.8ba) als standaard, gebruik hier het nummer van je afsluiting. (bijv. SG in -> 1, SG uit -> 2). ")
     if node_id is not None:
-        parameters.append(("08ba", node_id))
+        sub_parameter.append(("08ba", node_id))
 
 
 def heling_baan_regeling_menu():
     helling_minimale_groentijd = vraag_getal(
         "minimal greentime (P.017): wat is de minimale tijd dat het groene verkeerslicht aan moet blijven staan zonder dat er een voertuig door de afsluiting is gereden, voordat deze omschakeld naar de andere zijde.")
     if helling_minimale_groentijd is not None:
-        parameters.append(("0017", helling_minimale_groentijd))
+        sub_parameter.append(("0017", helling_minimale_groentijd))
 
     hellingbaan_roodtijd = vraag_getal(
         "Waiting-time between changing green-direction(P.01a): de tijd dat beide verkeerslichten op rood staan en dus de tijd dat het voertuig nodig heeft om de gehele afstand naar het andere verkeerslicht af te leggen.")
     if hellingbaan_roodtijd is not None:
-        parameters.append(("001a", hellingbaan_roodtijd))
+        sub_parameter.append(("001a", hellingbaan_roodtijd))
 
     geforceerde_sluittijd = vraag_getal(
         "geforceerde sluittijd (P.012): voor de hellingbaanregeling moet de geforceerde sluittijd in worden gesteld, houd rekening met de lengte van de hellingbaan. in de regel is de waarde van p.01a + 30sec een goede maatstaf om mee te beginnen.   ")
     if geforceerde_sluittijd is not None:
-        parameters.append(("0012", geforceerde_sluittijd))
+        sub_parameter.append(("0012", geforceerde_sluittijd))
 
     hellingbaan_voorkeur_richting = vraag_getal("""voorkeursrichting (P.891): welke richting heeft de voorkeur bij het wisselen van zijde? 1 = inrijden/Trapeziumzijde, 2 = uitrijden/rechthoekzijde, 0 = geen voorkeur
                                             """)
     if hellingbaan_voorkeur_richting is not None:
-        parameters.append(("0891", hellingbaan_voorkeur_richting))
+        sub_parameter.append(("0891", hellingbaan_voorkeur_richting))
 
 
 def loopsnelheden_OHD_menu():
     snelheid_open = vraag_getal(
         " loopsnelheid open in Hz (p.310): hoofdsnelheid waarmee de deur opent, zorg dat deze waarde rond de waarde of gelijk is aan de HZ-waarde van de motor zodat de motor het meeste kracht heeft.")
-    parameters.append(("0310", snelheid_open))
+    sub_parameter.append(("0310", snelheid_open))
     sneheid_dicht = vraag_getal(
         " loopsnelheid sluiten in Hz (p.350): hoofdsnelheid waarmee de deur sluit, zorg dat deze waarde rond de waarde of gelijk is aan de HZ-waarde van de motor zodat de motor het meeste kracht heeft.")
-    parameters.append(("0350", sneheid_dicht))
+    sub_parameter.append(("0350", sneheid_dicht))
     # nog verder implenteren
 
 
@@ -496,35 +521,35 @@ def BMI_menu():
         'op welke input van de besturing zit de BMI aangesloten? standaard = 6, enter = 6')
     if input_bmi is None or input_bmi == "":
         input_bmi = "6"
-        parameters.append(("0506", "165"))
+        hoofd_parameter.append(("0506", "165"))
     elif input_bmi is not None:
-        parameters.append((f"050{input_bmi}", "165"))
+        hoofd_parameter.append((f"050{input_bmi}", "165"))
     print(f'input {input_bmi} wordt gebruikt voor BMI.')
     eindstand_bmi = vraag_getal(
         'naar welke positie moet de afsluiting bewegen bij een BMI melding? 0 = open 1 = dicht')
     if eindstand_bmi == "0":
-        parameters.append((f"05{input_bmi}0", "1"))
-        parameters.append((f"05{input_bmi}1", "18"))
-        parameters.append((f"05{input_bmi}3", "0"))
-        parameters.append((f"05{input_bmi}4", "1"))
+        sub_parameter.append((f"05{input_bmi}0", "1"))
+        sub_parameter.append((f"05{input_bmi}1", "18"))
+        sub_parameter.append((f"05{input_bmi}3", "0"))
+        sub_parameter.append((f"05{input_bmi}4", "1"))
         vkl_bmi = vraag_getal(
             "wat moeten de verkeerslichten doen bij een BMI melding? 0 = beide rood, 1= buiten groen , 2 = binnen groen 3 = beide groen")
         if vkl_bmi is not None:
-            parameters.append((f"05{input_bmi}6", vkl_bmi))
+            sub_parameter.append((f"05{input_bmi}6", vkl_bmi))
 
     elif eindstand_bmi == "1":
-        parameters.append((f"05{input_bmi}0", "8"))
-        parameters.append((f"05{input_bmi}1", "1"))
-        parameters.append((f"05{input_bmi}3", "3"))
+        sub_parameter.append((f"05{input_bmi}0", "8"))
+        sub_parameter.append((f"05{input_bmi}1", "1"))
+        sub_parameter.append((f"05{input_bmi}3", "3"))
         print("de afsluiting zal sluiten bij een BMI melding. verkeerslichten blijven op rood staan.")
 
     no_nc_bmi = vraag_getal(
         ' is de BMI een maak of een verbreek contact? maak = 0, verbreek = 1, enter = verbreek ')
     if no_nc_bmi is None or no_nc_bmi == "":
-        parameters.append((f"05{input_bmi}2", "1"))
+        sub_parameter.append((f"05{input_bmi}2", "1"))
         print("de BMI is ingesteld als verbreek contact.")
     elif no_nc_bmi is not None:
-        parameters.append((f"05{input_bmi}2", no_nc_bmi))
+        sub_parameter.append((f"05{input_bmi}2", no_nc_bmi))
 
 
 # ======================
@@ -576,46 +601,52 @@ def vraag_bestandsnaam():
 # ======================
 
 
-def maak_xml(bestandsnaam, afkorting, projectnummer, parameters):
+def maak_xml(bestandsnaam, afkorting, projectnummer, hoofd_parameter, sub_parameter):
     vandaag = date.today().strftime("%Y-%m-%d")
 
-    # schrijf projectnummer naar P.927
-    parameters.append(("0927", projectnummer))
+    # projectnummer altijd hoofdparameter
+    if projectnummer:
+        sub_parameter.append(("0927", projectnummer))
 
-    # Bereken maximale lengte van ncode voor nette uitlijning
-    max_ncode_len = max(len(code) for code, _ in parameters)
+    # 🔹 sorteren per groep
+    hoofd_sorted = sorteer_parameters(hoofd_parameter)
+    sub_sorted = sorteer_parameters(sub_parameter)
 
-    # Begin van XML
+    # 🔹 hoofd eerst, daarna sub
+    alle_parameters = hoofd_sorted + sub_sorted
+
+    # nette uitlijning
+    max_ncode_len = max(len(code) for code, _ in alle_parameters)
+
     xml_lines = [
         '<?xml version="1.0" encoding="iso-8859-1" standalone="yes"?>',
         f'<parameterlist version="none" editor="{afkorting}" serial="{projectnummer}" date="{vandaag}">'
     ]
 
-    # Voeg parameters toe met nette uitlijning
-    for code, waarde in parameters:
-        # Zorg dat ncode altijd dezelfde breedte krijgt
-        code_padded = code.ljust(max_ncode_len)
+    # 🔹 Hoofdparameters bovenaan
+    for code, waarde in hoofd_sorted:
         xml_lines.append(
-            f'    <parameter ncode="{code_padded}" pdef="{waarde}" />')
+            f'    <parameter ncode="{code.ljust(max_ncode_len)}" pdef="{waarde}" />')
 
-    # Sluit de parameterlist
+    # 🔹 Subparameters daaronder
+    for code, waarde in sub_sorted:
+        xml_lines.append(
+            f'    <parameter ncode="{code.ljust(max_ncode_len)}" pdef="{waarde}" />')
+
     xml_lines.append('</parameterlist>')
 
-    # Bestandslocatie
     pad = os.path.join(
         os.path.expanduser("~"),
         "Downloads",
         f"{bestandsnaam}_{projectnummer}_{vandaag}.xml" if projectnummer else f"{bestandsnaam}_{vandaag}.xml"
     )
 
-    # Schrijf bestand
     with open(pad, "w", encoding="iso-8859-1") as f:
         f.write("\n".join(xml_lines))
 
-    print("\n XML opgeslagen in Downloads:")
+    print("\nXML opgeslagen in Downloads:")
     print(pad)
-    print("\nDruk op Enter om af te sluiten...")
-    input()
+    input("\nDruk op Enter om af te sluiten...")
 
 # ======================
 # Programma start
@@ -625,10 +656,11 @@ def maak_xml(bestandsnaam, afkorting, projectnummer, parameters):
 if __name__ == "__main__":
     wizard()  # vult parameters
 
-    if parameters:
+    if sub_parameter:
         afkorting = vraag_afkorting()
         projectnummer = vraag_projectnummer()
         bestandsnaam = vraag_bestandsnaam()
-        maak_xml(bestandsnaam, afkorting, projectnummer, parameters)
+        maak_xml(bestandsnaam, afkorting, projectnummer,
+                 hoofd_parameter, sub_parameter)
     else:
         print("Geen parameters ingevoerd, XML wordt niet aangemaakt.")
