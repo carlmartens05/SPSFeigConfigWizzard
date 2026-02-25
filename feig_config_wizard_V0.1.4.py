@@ -47,7 +47,7 @@ def wizard():
         afsluiting = input(
             """
         ====================================================================
-        ===   SPS Feig config wizard V0.1.3  made by CMA powered by AI   ===
+        ===   SPS Feig config wizard V0.1.4  made by CMA powered by AI   ===
         ====================================================================
 
         Op welk soort afsluiting zit de besturing aangesloten? (as/sg/ohd)
@@ -256,10 +256,17 @@ def ohd_menu():
     if keuze:
         motor_instelling_menu()
 
-    keuze_vkl = vraag_ja_nee("Verkeerslichtsturing instellen? (y/n) ")
-    if keuze_vkl is None:
+    keuze = vraag_ja_nee("loopsnelheden aanpassen (y/n)")
+    if keuze is None:
         return False
     if keuze:
+        loopsnelheden_OHD_menu()
+
+    keuze_vkl = vraag_ja_nee("Verkeerslichtsturing instellen? (y/n) ")
+    if keuze_vkl is None:
+        print("niet gelukt")
+        return False
+    if keuze_vkl:
         verkeerslichten_menu("ohd")
         keuze_hellingbaan = vraag_ja_nee(
             "Hellingbaan regeling instellen? (y/n) ")
@@ -318,6 +325,7 @@ def advanced_menu(afsluiting):
                 5 = node id voor PXS Feig koppeling 
                 6 = hellingbaan regeling
                 7 = BMI instellingen
+                8 = loopsnelheden instellen
                 klaar = klaar met configureren en maak bestand aan. 
                 terug = terug naar adv. menu. 
                 (enter = terug naar hoofdmenu)
@@ -336,6 +344,8 @@ def advanced_menu(afsluiting):
                 heling_baan_regeling_menu()
             elif submenu_keuze == "7":
                 BMI_menu()
+            elif submenu_keuze == "8":
+                loopsnelheden_OHD_menu()
             elif submenu_keuze == "klaar":
                 return True
             elif submenu_keuze == "terug":
@@ -423,7 +433,8 @@ def verkeerslichten_menu(afsluiting):
             ("0729", "5"),
             ("072f", "19"),
         ])
-    elif afsluiting == "ohd":
+
+    if afsluiting in ("ohd"):
         parameters.extend([
             ("0701", "1210"),
             ("0702", "1201"),
@@ -466,8 +477,13 @@ def heling_baan_regeling_menu():
 
 
 def loopsnelheden_OHD_menu():
-    pass
-    # nog implenteren
+    snelheid_open = vraag_getal(
+        " loopsnelheid open in Hz (p.310): hoofdsnelheid waarmee de deur opent, zorg dat deze waarde rond de waarde of gelijk is aan de HZ-waarde van de motor zodat de motor het meeste kracht heeft.")
+    parameters.append(("0310", snelheid_open))
+    sneheid_dicht = vraag_getal(
+        " loopsnelheid sluiten in Hz (p.350): hoofdsnelheid waarmee de deur sluit, zorg dat deze waarde rond de waarde of gelijk is aan de HZ-waarde van de motor zodat de motor het meeste kracht heeft.")
+    parameters.append(("0350", sneheid_dicht))
+    # nog verder implenteren
 
 
 def loopsnelheden_SG_menu():
