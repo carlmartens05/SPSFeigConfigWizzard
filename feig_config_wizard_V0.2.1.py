@@ -50,6 +50,25 @@ def sorteer_parameters(param_list):
 
     return sorted(param_list, key=sort_key)
 
+
+def bereken_input_parameter_code(inputnr):
+    """
+    Zet inputnummer om naar de juiste parametercode.
+    Inputs 1-15 → 05{hex}a
+    Inputs 16-20 → ongeldig
+    Inputs 21-26 → 0a1a t/m 0a6a
+    """
+    inputnr = int(inputnr)
+    if 1 <= inputnr <= 15:
+        input_hex = format(inputnr, "X").lower()
+        return f"05{input_hex}a"
+    elif 21 <= inputnr <= 26:
+        input_calc = inputnr - 20
+        return f"0a{input_calc}a"
+    else:
+        print("Ongeldige input. Toegestane waarden: 1-15 of 21-26.")
+        return None
+
 # ======================
 # Hoofd wizard
 # ======================
@@ -63,7 +82,7 @@ def wizard():
         afsluiting = input(
             """
         ====================================================================
-        ===   SPS Feig config wizard V0.2.0  made by CMA powered by AI   ===
+        ===   SPS Feig config wizard V0.2.1  made by CMA powered by AI   ===
         ====================================================================
 
         Op welk soort afsluiting zit de besturing aangesloten? (as/sg/ohd)
@@ -428,16 +447,19 @@ def motor_instelling_menu():
 
 
 def zelftest_menu(afsluiting):
-    if afsluiting in ("as", "ohd", "adv"):
-        inputnr = vraag_getal(
-            "Welke input wil je zelftesten? output 15 wordt standaard gebruikt als testoutput.")
-        if inputnr:
-            sub_parameter.append((f"05{inputnr}A", "1"))
-            hoofd_parameter.append(("070f", "2501"))
-            print(f"Input {inputnr} wordt getest.")
-            keuze = vraag_ja_nee("Wil je nog een input testen? (y/n) ")
-            if keuze:
-                return zelftest_menu(afsluiting)
+    # Controleer of 070f al toegevoegd is
+    if not any(code.lower() == "070f" for code, _ in hoofd_parameter):
+        hoofd_parameter.append(("070f", "2501"))
+
+    inputnr = vraag_getal("Welke input wil je zelftesten? (1-15 of 21-26) ")
+    if inputnr:
+        code = bereken_input_parameter_code(inputnr)
+        if code is None:
+            return zelftest_menu(afsluiting)
+        sub_parameter.append((code, "1"))
+        print(f"Input {inputnr} wordt getest.")
+        if vraag_ja_nee("Wil je nog een input testen? (y/n) "):
+            return zelftest_menu(afsluiting)
 
 
 def verkeerslichten_menu(afsluiting):
@@ -502,13 +524,21 @@ def heling_baan_regeling_menu():
 
 
 def loopsnelheden_OHD_menu():
+    # Loopsnelheid openen
     snelheid_open = vraag_getal(
-        " loopsnelheid open in Hz (p.310): hoofdsnelheid waarmee de deur opent, zorg dat deze waarde rond de waarde of gelijk is aan de HZ-waarde van de motor zodat de motor het meeste kracht heeft.")
-    sub_parameter.append(("0310", snelheid_open))
-    sneheid_dicht = vraag_getal(
-        " loopsnelheid sluiten in Hz (p.350): hoofdsnelheid waarmee de deur sluit, zorg dat deze waarde rond de waarde of gelijk is aan de HZ-waarde van de motor zodat de motor het meeste kracht heeft.")
-    sub_parameter.append(("0350", sneheid_dicht))
-    # nog verder implenteren
+        "Loopsnelheid open in Hz (p.310): hoofdsnelheid waarmee de deur opent, "
+        "zorg dat deze waarde rond de waarde of gelijk is aan de HZ-waarde van de motor zodat de motor het meeste kracht heeft."
+    )
+    if snelheid_open is not None:
+        sub_parameter.append(("0310", snelheid_open))
+
+    # Loopsnelheid sluiten
+    snelheid_dicht = vraag_getal(
+        "Loopsnelheid sluiten in Hz (p.350): hoofdsnelheid waarmee de deur sluit, "
+        "zorg dat deze waarde rond de waarde of gelijk is aan de HZ-waarde van de motor zodat de motor het meeste kracht heeft."
+    )
+    if snelheid_dicht is not None:
+        sub_parameter.append(("0350", snelheid_dicht))
 
 
 def loopsnelheden_SG_menu():
@@ -522,9 +552,13 @@ def BMI_menu():
     if input_bmi is None or input_bmi == "":
         input_bmi = "6"
         hoofd_parameter.append(("0506", "165"))
-    elif input_bmi is not None:
-        hoofd_parameter.append((f"050{input_bmi}", "165"))
+    else:
+        code = bereken_input_parameter_code(input_bmi)
+        if code is None:
+            return BMI_menu()
+        hoofd_parameter.append((code, "165"))
     print(f'input {input_bmi} wordt gebruikt voor BMI.')
+
     eindstand_bmi = vraag_getal(
         'naar welke positie moet de afsluiting bewegen bij een BMI melding? 0 = open 1 = dicht')
     if eindstand_bmi == "0":
@@ -536,7 +570,6 @@ def BMI_menu():
             "wat moeten de verkeerslichten doen bij een BMI melding? 0 = beide rood, 1= buiten groen , 2 = binnen groen 3 = beide groen")
         if vkl_bmi is not None:
             sub_parameter.append((f"05{input_bmi}6", vkl_bmi))
-
     elif eindstand_bmi == "1":
         sub_parameter.append((f"05{input_bmi}0", "8"))
         sub_parameter.append((f"05{input_bmi}1", "1"))
@@ -550,8 +583,6 @@ def BMI_menu():
         print("de BMI is ingesteld als verbreek contact.")
     elif no_nc_bmi is not None:
         sub_parameter.append((f"05{input_bmi}2", no_nc_bmi))
-
-
 # ======================
 # Invoerfuncties
 # ======================
