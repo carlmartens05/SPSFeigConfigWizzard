@@ -1,0 +1,7 @@
+# Python bytecode en cache
+__pycache__/
+*.pyc
+
+# Optioneel: editor bestanden
+.vscode/
+*.swp
