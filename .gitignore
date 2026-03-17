@@ -1,7 +1,24 @@
-# Python bytecode en cache
+# ======================
+# Python cache bestanden
+# ======================
 __pycache__/
 *.pyc
 
-# Optioneel: editor bestanden
+# ======================
+# Editor instellingen
+# ======================
 .vscode/
 *.swp
+*.idea/
+
+# ======================
+# XML bestanden die je genereert
+# ======================
+# Als je wilt dat gegenereerde XML in Downloads niet in Git komt:
+*.xml
+
+# ======================
+# Algemene bestanden
+# ======================
+.DS_Store
+Thumbs.db
