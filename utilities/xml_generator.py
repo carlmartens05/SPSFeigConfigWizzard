@@ -7,7 +7,7 @@ from datetime import date
 import os
 
 # Bestanden
-from parameter_logic import sorteer_parameters
+from .parameter_logic import sorteer_parameters
 
 # ======================
 # XML generator

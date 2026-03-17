@@ -2,8 +2,8 @@
 # wizard
 # ======================
 
-from input_helpers import vraag_ja_nee, vraag_getal, vraag_tekst
-from parameter_logic import bereken_input_parameter_code
+from .input_helpers import vraag_ja_nee, vraag_getal, vraag_tekst
+from .parameter_logic import bereken_input_parameter_code
 
 
 def wizard(config):
