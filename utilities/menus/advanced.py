@@ -1,6 +1,6 @@
 # imports
 from ..input_helpers import *
-from submenus.submenus import *
+from .submenus.submenus import *
 
 
 # ======================
@@ -51,7 +51,7 @@ def advanced_menu(config, afsluiting):
             elif submenu_keuze == "8":
                 loopsnelheden_OHD_menu(config)
             elif submenu_keuze == "9":
-                onderhouds_interval(config, afsluiting)
+                onderhouds_interval(config, "adv")
             elif submenu_keuze == "klaar":
                 return True
             elif submenu_keuze == "terug":

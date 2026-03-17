@@ -12,19 +12,19 @@ def onderhouds_interval(config, afsluiting):
         waarde = vraag_getal(
             "na hoeveel cycli moet de besturing info-melding I.080 geven? deze waarde is in duizend tal. (dus 50.000 is 50.)  ")
         if waarde is not None:
-            config.sub_parameter.append(("0970", waarde))
+            config.sub_parameter.append(("0970", "1"))
             config.sub_parameter.append(("0971", waarde))
 
-    if afsluiting in ("sg", "adv"):
+    if afsluiting in ("sg"):
         waarde = vraag_getal(
             "na hoeveel cycli moet de besturing info-melding I.080 geven? deze waarde is in duizend tal. (dus 50.000 is 50.)  ")
         if waarde is not None:
-            config.sub_parameter.append(("0970", waarde))
+            config.sub_parameter.append(("0970", "1"))
             config.sub_parameter.append(("0971", waarde))
 
-    if afsluiting in ("ohd, adv"):
+    if afsluiting in ("ohd"):
         waarde = vraag_getal(
             "na hoeveel cycli moet de besturing info-melding I.080 geven? deze waarde is in duizend tal. (dus 50.000 is 50.)  ")
         if waarde is not None:
-            config.sub_parameter.append(("0970", waarde))
+            config.sub_parameter.append(("0970", "1"))
             config.sub_parameter.append(("0971", waarde))
