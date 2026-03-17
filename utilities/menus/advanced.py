@@ -1,6 +1,6 @@
 # imports
 from ..input_helpers import *
-from .submenus import *
+from submenus.submenus import *
 
 
 # ======================
@@ -28,6 +28,7 @@ def advanced_menu(config, afsluiting):
                 6 = hellingbaan regeling
                 7 = BMI instellingen
                 8 = loopsnelheden instellen
+                9 = onderhouds-teller
                 klaar = klaar met configureren en maak bestand aan. 
                 terug = terug naar adv. menu. 
                 (enter = terug naar hoofdmenu)
@@ -49,6 +50,8 @@ def advanced_menu(config, afsluiting):
                 BMI_menu(config)
             elif submenu_keuze == "8":
                 loopsnelheden_OHD_menu(config)
+            elif submenu_keuze == "9":
+                onderhouds_interval(config, afsluiting)
             elif submenu_keuze == "klaar":
                 return True
             elif submenu_keuze == "terug":

@@ -1,6 +1,8 @@
 # imports
 from ..input_helpers import *
-from .submenus import *
+from ..parameter_logic import *
+from .submenus.submenus import *
+
 
 # ======================
 # Overheaddeuren
@@ -30,5 +32,8 @@ def ohd_menu(config):
 
     if vraag_ja_nee("BMI instellen? (y/n) "):
         BMI_menu(config)
+
+    if vraag_ja_nee("wil je een onderhoudsteller instellen? (y/n) "):
+        onderhouds_interval(config, "ohd")
 
     return True

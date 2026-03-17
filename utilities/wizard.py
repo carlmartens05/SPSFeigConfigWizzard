@@ -2,13 +2,13 @@
 # wizard
 # ======================
 
-from .input_helpers import *
-from .parameter_logic import *
-from menus.slagboom import as_menu
-from menus.speedgate import sg_menu
-from menus.overheaddeur import ohd_menu
-from menus.advanced import advanced_menu
-from menus.submenus import *
+from utilities.input_helpers import *
+from utilities.parameter_logic import *
+from .menus.slagboom import as_menu
+from .menus.speedgate import sg_menu
+from .menus.overheaddeur import ohd_menu
+from .menus.advanced import advanced_menu
+from .menus.submenus import *
 
 
 def wizard(config):

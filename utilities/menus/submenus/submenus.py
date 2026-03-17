@@ -1,6 +1,7 @@
 # imports
-from ..input_helpers import vraag_getal, vraag_ja_nee, vraag_tekst
-from ..parameter_logic import bereken_input_parameter_code
+from ...input_helpers import *
+from ...parameter_logic import bereken_input_parameter_code
+from .onderhouds_interval import onderhouds_interval
 
 # ======================
 # Submenu's

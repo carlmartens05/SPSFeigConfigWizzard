@@ -2,10 +2,10 @@
 # main
 # ======================
 
-from utilities.config import Config
-from utilities.wizard import wizard
-from utilities.xml_generator import maak_xml
-from utilities.input_helpers import vraag_afkorting, vraag_projectnummer, vraag_bestandsnaam
+from utilities.config import *
+from utilities.wizard import *
+from utilities.xml_generator import *
+from utilities.input_helpers import *
 
 
 if __name__ == "__main__":
