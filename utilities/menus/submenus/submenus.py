@@ -14,18 +14,13 @@ from .motor_instellingen import motor_instelling_menu
 from .zelftest import zelftest_menu
 # verkeerslichten
 from .verkeerslichten import verkeerslichten_menu
+# node id
+from .node_id import node_id_menu
 
 
 # ======================
 # Submenu's
 # ======================
-
-
-def node_id_menu(config):
-    node_id = vraag_getal(
-        "Wat is de Node ID van de besturing? T.B.V. de PXS Feig koppeling (P.8ba) als standaard, gebruik hier het nummer van je afsluiting. (bijv. SG in -> 1, SG uit -> 2). ")
-    if node_id is not None:
-        config.sub_parameter.append(("08ba", node_id))
 
 
 def heling_baan_regeling_menu(config):
