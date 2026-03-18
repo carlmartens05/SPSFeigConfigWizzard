@@ -8,7 +8,6 @@ from .menus.slagboom import as_menu
 from .menus.speedgate import sg_menu
 from .menus.overheaddeur import ohd_menu
 from .menus.advanced import advanced_menu
-from .menus.submenus import *
 
 
 def wizard(config):

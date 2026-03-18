@@ -1,3 +1,8 @@
+# =========================
+# logic for parameters v0.1
+# =========================
+
+
 def sorteer_parameters(param_list):
     """
     Sorteert parameters alfabetisch,
