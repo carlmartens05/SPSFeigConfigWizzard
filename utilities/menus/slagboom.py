@@ -3,7 +3,7 @@ from ..input_helpers import vraag_getal, vraag_ja_nee, vraag_tekst
 from .submenus.submenus import *
 
 # ======================
-# Slagbomen v0.1
+# Slagbomen v0.2
 # ======================
 
 
@@ -31,44 +31,18 @@ def as_plc_menu(config):
         [("0505", "1401"), ("0701", "0101"), ("0702", "0201")])
     config.sub_parameter.extend(
         [("0010", "0"), ("002a", "0"), ("04b7", "0"), ("0890", "0")])
+    print("standaard parameters voor een PLC sturing toegevoegd. ")
 
-    if vraag_ja_nee("Zelftest instellen? (y/n) "):
-        zelftest_menu(config, "as")
-
-    if vraag_ja_nee("Node ID instellen voor PXS Feig koppeling? (y/n) "):
-        node_id_menu(config)
-
-    if vraag_ja_nee("BMI instellen? (y/n) "):
-        BMI_menu(config)
-
-    if vraag_ja_nee("wil je een onderhoudsteller instellen? (y/n) "):
-        onderhouds_interval_menu(config, "as")
-
+    if vraag_ja_nee("wil je alle menu's doorlopen of wil je kiezen welke menu's ingesteld moeten worden? kiezen = y, alles = n "):
+        keuzemenu_menus_as_plc(config, "as")
+    else:
+        alle_menus_as_plc(config, "as")
     return True
 
 
 def as_standalone_menu(config):
-    if vraag_ja_nee("Zelftest instellen? (y/n)  "):
-        zelftest_menu(config, "as")
-
-    if vraag_ja_nee("Verkeerslichtsturing instellen? (y/n) "):
-        verkeerslichten_menu(config, "as")
-        if vraag_ja_nee("Hellingbaan regeling instellen? (y/n) "):
-            heling_baan_regeling_menu(config)
-        else:
-            if vraag_ja_nee("Autosluittijd aanpassen? (y/n) "):
-                auto_sluittijd_menu(config, "as")
+    if vraag_ja_nee("wil je alle menu's doorlopen of wil je kiezen welke menu's ingesteld moeten worden? kiezen = y, alles = n "):
+        keuzemenu_menus_as_standalone(config, "as")
     else:
-        if vraag_ja_nee("Autosluittijd aanpassen? (y/n) "):
-            auto_sluittijd_menu(config, "as")
-
-    if vraag_ja_nee("Node ID instellen voor PXS Feig koppeling? (y/n) "):
-        node_id_menu(config)
-
-    if vraag_ja_nee("BMI instellen? (y/n) "):
-        BMI_menu(config)
-
-    if vraag_ja_nee("wil je een onderhoudsteller instellen? (y/n) "):
-        onderhouds_interval_menu(config, "as")
-
+        alle_menus_as_standalone(config, "as")
     return True
