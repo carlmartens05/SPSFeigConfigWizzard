@@ -18,23 +18,13 @@ from .verkeerslichten import verkeerslichten_menu
 from .node_id import node_id_menu
 # heling baan regeling
 from .heling_baan_regeling import heling_baan_regeling_menu
+# loopsnelheden
+from .loopsnelheden import loopsnelheden_OHD_menu
 
 
 # ======================
 # Submenu's
 # ======================
-
-
-def loopsnelheden_OHD_menu(config):
-    snelheid_open = vraag_getal(
-        "Loopsnelheid open in Hz (p.310): hoofdsnelheid waarmee de deur opent, zorg dat deze waarde rond de waarde of gelijk is aan de HZ-waarde van de motor zodat de motor het meeste kracht heeft.")
-    if snelheid_open is not None:
-        config.sub_parameter.append(("0310", snelheid_open))
-
-    snelheid_dicht = vraag_getal(
-        "Loopsnelheid sluiten in Hz (p.350): hoofdsnelheid waarmee de deur sluit, zorg dat deze waarde rond de waarde of gelijk is aan de HZ-waarde van de motor zodat de motor het meeste kracht heeft.")
-    if snelheid_dicht is not None:
-        config.sub_parameter.append(("0350", snelheid_dicht))
 
 
 def BMI_menu(config):
