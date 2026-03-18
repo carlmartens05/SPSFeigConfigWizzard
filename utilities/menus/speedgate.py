@@ -4,7 +4,7 @@ from .submenus.submenus import *
 
 
 # ======================
-# Speedgates
+# Speedgates v0.1
 # ======================
 
 def sg_menu(config):
@@ -24,7 +24,7 @@ def sg_menu(config):
             BMI_menu(config)
 
         if vraag_ja_nee("wil je een onderhoudsteller instellen? (y/n) "):
-            onderhouds_interval(config, "sg")
+            onderhouds_interval_menu(config, "sg")
         return True
 
     elif sg_plc == "n":
@@ -41,7 +41,7 @@ def sg_menu(config):
             BMI_menu(config)
 
         if vraag_ja_nee("wil je een onderhoudsteller instellen? (y/n) "):
-            onderhouds_interval(config, "sg")
+            onderhouds_interval_menu(config, "sg")
         return True
 
     elif sg_plc == "terug":

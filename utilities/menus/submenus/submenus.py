@@ -1,46 +1,19 @@
 # imports
+# == algemeen ==
 from ...input_helpers import *
 from ...parameter_logic import bereken_input_parameter_code
-from .onderhouds_interval import onderhouds_interval
+
+# == submenu's ==
+# onderhouds intrval
+from .onderhouds_interval import onderhouds_interval_menu
+# auto sluittijd
+from .auto_sluittijd import auto_sluittijd_menu
+# motor instellingen
+from .motor_instellingen import motor_instelling_menu
 
 # ======================
 # Submenu's
 # ======================
-
-
-def auto_sluittijd_menu(config, afsluiting):
-    if afsluiting in ("as", "adv"):
-        waarde = vraag_getal("Auto sluittijd geheel open (P.010)")
-        if waarde is not None:
-            config.sub_parameter.append(("0010", waarde))
-
-    if afsluiting in ("sg", "adv"):
-        waarde = vraag_getal("Auto sluittijd half open (P.011)")
-        if waarde is not None:
-            config.sub_parameter.append(("0011", waarde))
-
-    if afsluiting in ("sg", "ohd", "adv"):
-        waarde = vraag_getal("Geforceerde sluittijd (P.012)")
-        if waarde is not None:
-            config.sub_parameter.append(("0012", waarde))
-
-
-def motor_instelling_menu(config):
-    freq = vraag_getal("Frequentie motor (P.100 Hz)")
-    if freq is not None:
-        config.sub_parameter.append(("0100", freq))
-
-    amp = vraag_getal("Amperage motor (P.101) laat de punt weg dus 2.1A = 21")
-    if amp is not None:
-        config.sub_parameter.append(("0101", amp))
-
-    cosphi = vraag_getal("Cos phi motor (P.102)")
-    if cosphi is not None:
-        config.sub_parameter.append(("0102", cosphi))
-
-    volt = vraag_getal("Voltage motor (P.103)")
-    if volt is not None:
-        config.sub_parameter.append(("0103", volt))
 
 
 def zelftest_menu(config, afsluiting):

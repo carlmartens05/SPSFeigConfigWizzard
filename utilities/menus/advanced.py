@@ -3,9 +3,9 @@ from ..input_helpers import *
 from .submenus.submenus import *
 
 
-# ======================
-# advanced menu voor handmatige submenu's en parameters
-# ======================
+# ===========================================================
+# advanced menu voor handmatige submenu's en parameters v0.1
+# ===========================================================
 
 def advanced_menu(config, afsluiting):
     keuze = vraag_getal("""
@@ -51,7 +51,7 @@ def advanced_menu(config, afsluiting):
             elif submenu_keuze == "8":
                 loopsnelheden_OHD_menu(config)
             elif submenu_keuze == "9":
-                onderhouds_interval(config, "adv")
+                onderhouds_interval_menu(config, "adv")
             elif submenu_keuze == "klaar":
                 return True
             elif submenu_keuze == "terug":

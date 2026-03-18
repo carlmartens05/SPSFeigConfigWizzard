@@ -1,6 +1,6 @@
-# ======================
-# vraag hulpfuncties
-# ======================
+# =========================
+# vraag hulpfuncties v0.1
+# =========================
 
 def vraag_ja_nee(vraag):
     while True:

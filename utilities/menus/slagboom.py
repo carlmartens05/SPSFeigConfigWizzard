@@ -3,7 +3,7 @@ from ..input_helpers import vraag_getal, vraag_ja_nee, vraag_tekst
 from .submenus.submenus import *
 
 # ======================
-# Slagbomen
+# Slagbomen v0.1
 # ======================
 
 
@@ -42,7 +42,7 @@ def as_plc_menu(config):
         BMI_menu(config)
 
     if vraag_ja_nee("wil je een onderhoudsteller instellen? (y/n) "):
-        onderhouds_interval(config, "as")
+        onderhouds_interval_menu(config, "as")
 
     return True
 
@@ -69,6 +69,6 @@ def as_standalone_menu(config):
         BMI_menu(config)
 
     if vraag_ja_nee("wil je een onderhoudsteller instellen? (y/n) "):
-        onderhouds_interval(config, "as")
+        onderhouds_interval_menu(config, "as")
 
     return True

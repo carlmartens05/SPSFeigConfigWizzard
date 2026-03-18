@@ -1,5 +1,5 @@
 # ======================
-# wizard
+# wizard v0.1
 # ======================
 
 from utilities.input_helpers import *

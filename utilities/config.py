@@ -1,3 +1,6 @@
+# ====================
+# config for globals
+# ====================
 
 class Config:
     def __init__(self):

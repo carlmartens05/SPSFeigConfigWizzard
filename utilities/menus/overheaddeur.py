@@ -5,7 +5,7 @@ from .submenus.submenus import *
 
 
 # ======================
-# Overheaddeuren
+# Overheaddeuren v0.1
 # ======================
 
 
@@ -34,6 +34,6 @@ def ohd_menu(config):
         BMI_menu(config)
 
     if vraag_ja_nee("wil je een onderhoudsteller instellen? (y/n) "):
-        onderhouds_interval(config, "ohd")
+        onderhouds_interval_menu(config, "ohd")
 
     return True
