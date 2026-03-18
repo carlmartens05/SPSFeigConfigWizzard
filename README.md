@@ -1,3 +1,5 @@
+laatste update van de .exe = 18-3-26
+
 er is keuze uit de volgende config menu's:
 1. auto sluittijd                        v0.1        as/sg/ohd     
 2. bmi                                   v0.1        as/sg/ohd
