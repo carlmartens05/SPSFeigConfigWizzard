@@ -4,7 +4,7 @@ from .submenus.submenus import *
 
 
 # ======================
-# Speedgates v0.1
+# Speedgates v0.2
 # ======================
 
 def sg_menu(config):
@@ -15,33 +15,21 @@ def sg_menu(config):
         config.hoofd_parameter.extend(
             [("0501", "0101"), ("0502", "0401"), ("0503", "0701")])
         config.sub_parameter.extend(
-            [("0522", "1"), ("0010", "0"), ("0011", "0"), ("0012", "0"), ("08BA", "4"), ("0890", "0")])
+            [("0522", "1"), ("0010", "0"), ("0011", "0"), ("0012", "0"), ("08ba", "4"), ("0890", "0")])
+
         print("standaard parameters voor een PLC sturing toegevoegd. ")
-        if vraag_ja_nee("Node ID instellen voor PXS Feig koppeling? (y/n) "):
-            node_id_menu(config)
 
-        if vraag_ja_nee("BMI instellen? (y/n) "):
-            BMI_menu(config)
-
-        if vraag_ja_nee("wil je een onderhoudsteller instellen? (y/n) "):
-            onderhouds_interval_menu(config, "sg")
+        if vraag_ja_nee("wil je alle menu's doorlopen of wil je kiezen welke menu's ingesteld moeten worden? kiezen = y, alles = n "):
+            keuzemenu_menus_sg_plc(config, "sg")
+        else:
+            alle_menus_sg_plc(config, "sg")
         return True
 
     elif sg_plc == "n":
-        if vraag_ja_nee("Hellingbaan regeling instellen? (y/n) "):
-            heling_baan_regeling_menu(config)
+        if vraag_ja_nee("wil je alle menu's doorlopen of wil je kiezen welke menu's ingesteld moeten worden? kiezen = y, alles = n "):
+            keuzemenu_menus_sg_standalone(config, "sg")
         else:
-            if vraag_ja_nee("Autosluittijd aanpassen? (y/n) "):
-                auto_sluittijd_menu(config, "sg")
-
-        if vraag_ja_nee("Node ID instellen voor PXS Feig koppeling? (y/n) "):
-            node_id_menu(config)
-
-        if vraag_ja_nee("BMI instellen? (y/n) "):
-            BMI_menu(config)
-
-        if vraag_ja_nee("wil je een onderhoudsteller instellen? (y/n) "):
-            onderhouds_interval_menu(config, "sg")
+            alle_menus_sg_standalone(config, "sg")
         return True
 
     elif sg_plc == "terug":

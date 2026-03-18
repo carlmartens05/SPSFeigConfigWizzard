@@ -1,5 +1,5 @@
 # ============================
-# subemenu's v0.2
+# subemenu's v0.3
 # ============================
 
 # imports
@@ -85,7 +85,7 @@ def alle_menus_as_plc(config, afsluiting):
         onderhouds_interval_menu(config, "as")
     return True
 
-# === as standalone
+# === as standalone ===
 
 
 def keuzemenu_menus_as_standalone(config, afsluiting):
@@ -152,4 +152,104 @@ def alle_menus_as_standalone(config, afsluiting):
 
     if vraag_ja_nee("wil je een onderhoudsteller instellen? (y/n) "):
         onderhouds_interval_menu(config, "as")
+    return True
+
+
+# == speedgate ==
+
+# === sg plc's ===
+
+
+def keuzemenu_menus_sg_plc(config, afsluiting):
+    from ..speedgate import sg_menu
+    while True:
+        submenu_keuze = vraag_tekst("""
+                ===== welk submenu wil je doorlopen? ===== 
+                1 = node id voor PXS Feig koppeling 
+                2 = BMI instellingen
+                3 = onderhouds-teller
+                klaar = klaar met configureren en maak bestand aan. 
+                terug = terug naar adv. menu. 
+                (enter = terug naar hoofdmenu)
+                """)
+
+        if submenu_keuze == "1":
+            node_id_menu(config)
+        elif submenu_keuze == "2":
+            BMI_menu(config)
+        elif submenu_keuze == "3":
+            onderhouds_interval_menu(config, "adv")
+        elif submenu_keuze == "klaar":
+            return True
+        elif submenu_keuze == "terug":
+            return sg_menu(config, afsluiting)
+        elif submenu_keuze is None or submenu_keuze == "":
+            return False
+        else:
+            print("Ongeldige keuze.")
+
+
+def alle_menus_sg_plc(config, afsluiting):
+    if vraag_ja_nee("Node ID instellen voor PXS Feig koppeling? (y/n) "):
+        node_id_menu(config)
+    if vraag_ja_nee("BMI instellen? (y/n) "):
+        BMI_menu(config)
+
+    if vraag_ja_nee("wil je een onderhoudsteller instellen? (y/n) "):
+        onderhouds_interval_menu(config, "sg")
+    return True
+
+# === sg standalone ===
+
+
+def keuzemenu_menus_sg_standalone(config, afsluiting):
+    from ..speedgate import sg_menu
+    while True:
+        submenu_keuze = vraag_tekst("""
+                ===== welk submenu wil je doorlopen? ===== 
+                1 = autosluittijd 
+                2 = node id voor PXS Feig koppeling 
+                3 = hellingbaan regeling
+                4 = BMI instellingen
+                5 = onderhouds-teller
+                klaar = klaar met configureren en maak bestand aan. 
+                terug = terug naar adv. menu. 
+                (enter = terug naar hoofdmenu)
+                """)
+
+        if submenu_keuze == "1":
+            auto_sluittijd_menu(config, afsluiting)
+        elif submenu_keuze == "2":
+            node_id_menu(config)
+        elif submenu_keuze == "3":
+            heling_baan_regeling_menu(config)
+        elif submenu_keuze == "4":
+            BMI_menu(config)
+        elif submenu_keuze == "5":
+            onderhouds_interval_menu(config, "sg")
+        elif submenu_keuze == "klaar":
+            return True
+        elif submenu_keuze == "terug":
+            return sg_menu(config)
+        elif submenu_keuze is None or submenu_keuze == "":
+            return False
+        else:
+            print("Ongeldige keuze.")
+
+
+def alle_menus_sg_standalone(config, afsluiting):
+    if vraag_ja_nee("Hellingbaan regeling instellen? (y/n) "):
+        heling_baan_regeling_menu(config)
+    else:
+        if vraag_ja_nee("Autosluittijd aanpassen? (y/n) "):
+            auto_sluittijd_menu(config, "sg")
+
+    if vraag_ja_nee("Node ID instellen voor PXS Feig koppeling? (y/n) "):
+        node_id_menu(config)
+
+    if vraag_ja_nee("BMI instellen? (y/n) "):
+        BMI_menu(config)
+
+    if vraag_ja_nee("wil je een onderhoudsteller instellen? (y/n) "):
+        onderhouds_interval_menu(config, "sg")
     return True
