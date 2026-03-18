@@ -16,7 +16,7 @@ def sg_menu(config):
             [("0501", "0101"), ("0502", "0401"), ("0503", "0701")])
         config.sub_parameter.extend(
             [("0522", "1"), ("0010", "0"), ("0011", "0"), ("0012", "0"), ("08BA", "4"), ("0890", "0")])
-
+        print("standaard parameters voor een PLC sturing toegevoegd. ")
         if vraag_ja_nee("Node ID instellen voor PXS Feig koppeling? (y/n) "):
             node_id_menu(config)
 

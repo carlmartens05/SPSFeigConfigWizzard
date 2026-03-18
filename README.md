@@ -1,5 +1,5 @@
 er is keuze uit de volgende config menu's:
-1. auto sluittijd                        v0.1        as/sg/ohd
+1. auto sluittijd                        v0.1        as/sg/ohd     
 2. bmi                                   v0.1        as/sg/ohd
 3. helligbaan regeling                   v0.1        as/sg/ohd
 4. loopsnelheden                         v0.1        ohd
