@@ -4,7 +4,7 @@ from .submenus.submenus import *
 
 
 # ===========================================================
-# advanced menu voor handmatige submenu's en parameters v0.1
+# advanced menu voor handmatige submenu's en parameters v0.2
 # ===========================================================
 
 def advanced_menu(config, afsluiting):
@@ -29,6 +29,7 @@ def advanced_menu(config, afsluiting):
                 7 = BMI instellingen
                 8 = loopsnelheden instellen
                 9 = onderhouds-teller
+                10 = boost instellingen 
                 klaar = klaar met configureren en maak bestand aan. 
                 terug = terug naar adv. menu. 
                 (enter = terug naar hoofdmenu)
@@ -52,6 +53,9 @@ def advanced_menu(config, afsluiting):
                 loopsnelheden_OHD_menu(config)
             elif submenu_keuze == "9":
                 onderhouds_interval_menu(config, "adv")
+            elif submenu_keuze == "10":
+                from .submenus.boost import boost_menu
+                boost_menu(config)
             elif submenu_keuze == "klaar":
                 return True
             elif submenu_keuze == "terug":
