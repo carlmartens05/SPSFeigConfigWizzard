@@ -13,6 +13,11 @@ def motor_instelling_menu(config):
     config.sub_parameter.append(("0115", "25"))
     config.sub_parameter.append(("0116", "100"))
     config.sub_parameter.append(("0117", "1"))
+    config.sub_parameter.append(("0142", "0"))
+    config.sub_parameter.append(("0147", "0"))
+    config.sub_parameter.append(("0143", "100"))
+    config.sub_parameter.append(("0148", "100"))
+    config.sub_parameter.append(("0165", "2"))
     freq = vraag_getal("Frequentie motor (P.100 Hz)")
     if freq is not None:
         config.sub_parameter.append(("0100", freq))
