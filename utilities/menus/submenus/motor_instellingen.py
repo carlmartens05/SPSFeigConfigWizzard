@@ -3,7 +3,7 @@ from ...input_helpers import vraag_getal, vraag_ja_nee, vraag_tekst
 from ...parameter_logic import bereken_input_parameter_code
 
 # =========================
-# motor instellingen v0.3
+# motor instellingen v0.4
 # =========================
 
 
@@ -12,7 +12,7 @@ def motor_instelling_menu(config):
     config.sub_parameter.append(("0112", "1"))
     config.sub_parameter.append(("0115", "25"))
     config.sub_parameter.append(("0116", "100"))
-    config.sub_parameter.append(("0117", "1"))
+    config.sub_parameter.append(("0117", "0"))
     config.sub_parameter.append(("0142", "0"))
     config.sub_parameter.append(("0147", "0"))
     config.sub_parameter.append(("0143", "100"))
