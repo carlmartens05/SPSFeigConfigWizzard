@@ -33,7 +33,7 @@ def ohd_menu(config):
     if vraag_ja_nee("BMI instellen? (y/n) "):
         BMI_menu(config)
 
-    if vraag_ja_nee("wil je een onderhoudsteller instellen? (y/n) "):
-        onderhouds_interval_menu(config, "ohd")
+    # if vraag_ja_nee("wil je een onderhoudsteller instellen? (y/n) "):
+    #    onderhouds_interval_menu(config, "ohd")
 
     return True

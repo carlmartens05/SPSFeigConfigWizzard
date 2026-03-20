@@ -47,7 +47,6 @@ def keuzemenu_menus_as_plc(config, afsluiting):
                 1 = zelftest 
                 2 = node id voor PXS Feig koppeling 
                 3 = BMI instellingen
-                4 = onderhouds-teller
                 klaar = klaar met configureren en maak bestand aan. 
                 terug = terug naar AS PLC menu. 
                 (enter = terug naar hoofdmenu)
@@ -59,8 +58,8 @@ def keuzemenu_menus_as_plc(config, afsluiting):
             node_id_menu(config)
         elif submenu_keuze == "3":
             BMI_menu(config)
-        elif submenu_keuze == "4":
-            onderhouds_interval_menu(config, "as")
+#        elif submenu_keuze == "4":
+#            onderhouds_interval_menu(config, "as")
         elif submenu_keuze == "klaar":
             return True
         elif submenu_keuze == "terug":
@@ -81,8 +80,8 @@ def alle_menus_as_plc(config, afsluiting):
     if vraag_ja_nee("BMI instellen? (y/n) "):
         BMI_menu(config)
 
-    if vraag_ja_nee("wil je een onderhoudsteller instellen? (y/n) "):
-        onderhouds_interval_menu(config, "as")
+#    if vraag_ja_nee("wil je een onderhoudsteller instellen? (y/n) "):
+#        onderhouds_interval_menu(config, "as")
     return True
 
 # === as standalone ===
