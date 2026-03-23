@@ -1,5 +1,5 @@
 # ============================
-# subemenu's v0.3
+# subemenu's v0.4
 # ============================
 
 # imports
@@ -98,7 +98,6 @@ def keuzemenu_menus_as_standalone(config, afsluiting):
                 4 = node id voor PXS Feig koppeling 
                 5 = hellingbaan regeling
                 6 = BMI instellingen
-                7 = onderhouds-teller
                 klaar = klaar met configureren en maak bestand aan. 
                 terug = terug naar adv. menu. 
                 (enter = terug naar hoofdmenu)
@@ -116,8 +115,8 @@ def keuzemenu_menus_as_standalone(config, afsluiting):
             heling_baan_regeling_menu(config)
         elif submenu_keuze == "6":
             BMI_menu(config)
-        elif submenu_keuze == "7":
-            onderhouds_interval_menu(config, "as")
+        # elif submenu_keuze == "7":
+        #    onderhouds_interval_menu(config, "as")
         elif submenu_keuze == "klaar":
             return True
         elif submenu_keuze == "terug":
@@ -149,8 +148,8 @@ def alle_menus_as_standalone(config, afsluiting):
     if vraag_ja_nee("BMI instellen? (y/n) "):
         BMI_menu(config)
 
-    if vraag_ja_nee("wil je een onderhoudsteller instellen? (y/n) "):
-        onderhouds_interval_menu(config, "as")
+    # if vraag_ja_nee("wil je een onderhoudsteller instellen? (y/n) "):
+    #    onderhouds_interval_menu(config, "as")
     return True
 
 
@@ -166,7 +165,6 @@ def keuzemenu_menus_sg_plc(config, afsluiting):
                 ===== welk submenu wil je doorlopen? ===== 
                 1 = node id voor PXS Feig koppeling 
                 2 = BMI instellingen
-                3 = onderhouds-teller
                 klaar = klaar met configureren en maak bestand aan. 
                 terug = terug naar adv. menu. 
                 (enter = terug naar hoofdmenu)
@@ -176,8 +174,8 @@ def keuzemenu_menus_sg_plc(config, afsluiting):
             node_id_menu(config)
         elif submenu_keuze == "2":
             BMI_menu(config)
-        elif submenu_keuze == "3":
-            onderhouds_interval_menu(config, "adv")
+        #    elif submenu_keuze == "3":
+        #        onderhouds_interval_menu(config, "adv")
         elif submenu_keuze == "klaar":
             return True
         elif submenu_keuze == "terug":
@@ -194,8 +192,8 @@ def alle_menus_sg_plc(config, afsluiting):
     if vraag_ja_nee("BMI instellen? (y/n) "):
         BMI_menu(config)
 
-    if vraag_ja_nee("wil je een onderhoudsteller instellen? (y/n) "):
-        onderhouds_interval_menu(config, "sg")
+    # if vraag_ja_nee("wil je een onderhoudsteller instellen? (y/n) "):
+    #    onderhouds_interval_menu(config, "sg")
     return True
 
 # === sg standalone ===
@@ -210,7 +208,6 @@ def keuzemenu_menus_sg_standalone(config, afsluiting):
                 2 = node id voor PXS Feig koppeling 
                 3 = hellingbaan regeling
                 4 = BMI instellingen
-                5 = onderhouds-teller
                 klaar = klaar met configureren en maak bestand aan. 
                 terug = terug naar adv. menu. 
                 (enter = terug naar hoofdmenu)
@@ -224,8 +221,8 @@ def keuzemenu_menus_sg_standalone(config, afsluiting):
             heling_baan_regeling_menu(config)
         elif submenu_keuze == "4":
             BMI_menu(config)
-        elif submenu_keuze == "5":
-            onderhouds_interval_menu(config, "sg")
+        # elif submenu_keuze == "5":
+        #    onderhouds_interval_menu(config, "sg")
         elif submenu_keuze == "klaar":
             return True
         elif submenu_keuze == "terug":
@@ -249,6 +246,6 @@ def alle_menus_sg_standalone(config, afsluiting):
     if vraag_ja_nee("BMI instellen? (y/n) "):
         BMI_menu(config)
 
-    if vraag_ja_nee("wil je een onderhoudsteller instellen? (y/n) "):
-        onderhouds_interval_menu(config, "sg")
+    # if vraag_ja_nee("wil je een onderhoudsteller instellen? (y/n) "):
+    #    onderhouds_interval_menu(config, "sg")
     return True
