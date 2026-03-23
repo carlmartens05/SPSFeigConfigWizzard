@@ -1,5 +1,5 @@
 # ============================
-# subemenu's v0.4
+# subemenu's v0.5
 # ============================
 
 # imports
@@ -248,4 +248,84 @@ def alle_menus_sg_standalone(config, afsluiting):
 
     # if vraag_ja_nee("wil je een onderhoudsteller instellen? (y/n) "):
     #    onderhouds_interval_menu(config, "sg")
+    return True
+
+
+def keuzemenu_menus_ohd(config, afsluiting):
+    while True:
+        submenu_keuze = vraag_tekst("""
+                ===== welk submenu wil je doorlopen? ===== 
+                1 = autosluittijd 
+                2 = motor instellingen 
+                3 = zelftest 
+                4 = verkeerslichten 
+                5 = node id voor PXS Feig koppeling 
+                6 = hellingbaan regeling
+                7 = BMI instellingen
+                8 = loopsnelheden instellen
+                9 = boost instellingen 
+                klaar = klaar met configureren en maak bestand aan. 
+                terug = terug naar adv. menu. 
+                (enter = terug naar hoofdmenu)
+                """)
+
+        if submenu_keuze == "1":
+            auto_sluittijd_menu(config, afsluiting)
+        elif submenu_keuze == "2":
+            motor_instelling_menu(config)
+        elif submenu_keuze == "3":
+            zelftest_menu(config, afsluiting)
+        elif submenu_keuze == "4":
+            verkeerslichten_menu(config, afsluiting)
+        elif submenu_keuze == "5":
+            node_id_menu(config)
+        elif submenu_keuze == "6":
+            heling_baan_regeling_menu(config)
+        elif submenu_keuze == "7":
+            BMI_menu(config)
+        elif submenu_keuze == "8":
+            loopsnelheden_OHD_menu(config)
+        # elif submenu_keuze == "9":
+        #    onderhouds_interval_menu(config, "adv")
+        elif submenu_keuze == "9":
+            from submenus.boost import boost_menu
+            boost_menu(config)
+        elif submenu_keuze == "klaar":
+            return True
+        elif submenu_keuze == "terug":
+            from ..overheaddeur import ohd_menu
+            return ohd_menu(config, afsluiting)
+        elif submenu_keuze is None or submenu_keuze == "":
+            return False
+        else:
+            print("Ongeldige keuze.")
+
+
+def alle_menus_ohd(config, afsluiting):
+    if vraag_ja_nee("Motor instellingen aanpassen? (y/n) "):
+        motor_instelling_menu(config)
+
+    if vraag_ja_nee("loopsnelheden aanpassen (y/n)"):
+        loopsnelheden_OHD_menu(config)
+
+    if vraag_ja_nee("Verkeerslichtsturing instellen? (y/n) "):
+        verkeerslichten_menu(config, "ohd")
+        if vraag_ja_nee("Hellingbaan regeling instellen? (y/n) "):
+            heling_baan_regeling_menu(config)
+        else:
+            if vraag_ja_nee("Autosluittijd aanpassen? (y/n) "):
+                auto_sluittijd_menu(config, "ohd")
+    else:
+        if vraag_ja_nee("Autosluittijd aanpassen? (y/n) "):
+            auto_sluittijd_menu(config, "ohd")
+
+    if vraag_ja_nee("Node ID instellen voor PXS Feig koppeling? (y/n) "):
+        node_id_menu(config)
+
+    if vraag_ja_nee("BMI instellen? (y/n) "):
+        BMI_menu(config)
+
+    # if vraag_ja_nee("wil je een onderhoudsteller instellen? (y/n) "):
+    #    onderhouds_interval_menu(config, "ohd")
+
     return True
