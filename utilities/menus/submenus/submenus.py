@@ -1,5 +1,5 @@
 # ============================
-# subemenu's v0.5
+# subemenu's v0.5.1
 # ============================
 
 # imports
@@ -305,7 +305,10 @@ def alle_menus_ohd(config, afsluiting):
     if vraag_ja_nee("Motor instellingen aanpassen? (y/n) "):
         motor_instelling_menu(config)
 
-    if vraag_ja_nee("loopsnelheden aanpassen (y/n)"):
+    if vraag_ja_nee("zelftest instellen? (y/n)"):
+        zelftest_menu(config)
+
+    if vraag_ja_nee("loopsnelheden aanpassen? (y/n)"):
         loopsnelheden_OHD_menu(config)
 
     if vraag_ja_nee("Verkeerslichtsturing instellen? (y/n) "):
