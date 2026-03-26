@@ -339,21 +339,17 @@ def alle_menus_ohd_standalone(config, afsluiting):
         from .motor_instellingen import motor_instelling_menu
         motor_instelling_menu(config)
 
-
-<< << << < HEAD
     if vraag_ja_nee("positioneringssysteem instellen? (y/n)   "):
         from .positioning_system_profile import positioning_system_profile
         positioning_system_profile(config)
 
     if vraag_ja_nee("loopsnelheden aanpassen (y/n)  "):
         from .loopsnelheden import loopsnelheden_OHD_menu
-== == == =
     if vraag_ja_nee("zelftest instellen? (y/n)"):
         from .zelftest import zelftest_menu
         zelftest_menu(config)
 
     if vraag_ja_nee("loopsnelheden aanpassen? (y/n)"):
->>>>>> > 1d65c80aa5a1037c246eb26b1b2ac6b185ceaa12
         from .loopsnelheden import loopsnelheden_OHD_menu
         loopsnelheden_OHD_menu(config)
 
