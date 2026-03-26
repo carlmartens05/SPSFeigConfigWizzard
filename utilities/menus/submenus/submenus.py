@@ -21,12 +21,12 @@ def keuzemenu_menus_as_plc(config, afsluiting):
     from ..slagboom import as_plc_menu
     while True:
         submenu_keuze = vraag_tekst("""
-                ===== welk submenu wil je doorlopen? ===== 
-                1 = zelftest 
-                2 = node id voor PXS Feig koppeling 
+                ===== welk submenu wil je doorlopen? =====
+                1 = zelftest
+                2 = node id voor PXS Feig koppeling
                 3 = BMI instellingen
-                klaar = klaar met configureren en maak bestand aan. 
-                terug = terug naar AS PLC menu. 
+                klaar = klaar met configureren en maak bestand aan.
+                terug = terug naar AS PLC menu.
                 (enter = terug naar hoofdmenu)
                 """)
 
@@ -77,15 +77,15 @@ def keuzemenu_menus_as_standalone(config, afsluiting):
     from ..slagboom import as_standalone_menu
     while True:
         submenu_keuze = vraag_tekst("""
-                ===== welk submenu wil je doorlopen? ===== 
-                1 = autosluittijd 
-                2 = zelftest 
-                3 = verkeerslichten 
-                4 = node id voor PXS Feig koppeling 
+                ===== welk submenu wil je doorlopen? =====
+                1 = autosluittijd
+                2 = zelftest
+                3 = verkeerslichten
+                4 = node id voor PXS Feig koppeling
                 5 = hellingbaan regeling
                 6 = BMI instellingen
-                klaar = klaar met configureren en maak bestand aan. 
-                terug = terug naar adv. menu. 
+                klaar = klaar met configureren en maak bestand aan.
+                terug = terug naar adv. menu.
                 (enter = terug naar hoofdmenu)
                 """)
 
@@ -162,11 +162,11 @@ def keuzemenu_menus_sg_plc(config, afsluiting):
     from ..speedgate import sg_menu
     while True:
         submenu_keuze = vraag_tekst("""
-                ===== welk submenu wil je doorlopen? ===== 
-                1 = node id voor PXS Feig koppeling 
+                ===== welk submenu wil je doorlopen? =====
+                1 = node id voor PXS Feig koppeling
                 2 = BMI instellingen
-                klaar = klaar met configureren en maak bestand aan. 
-                terug = terug naar adv. menu. 
+                klaar = klaar met configureren en maak bestand aan.
+                terug = terug naar adv. menu.
                 (enter = terug naar hoofdmenu)
                 """)
 
@@ -209,13 +209,13 @@ def keuzemenu_menus_sg_standalone(config, afsluiting):
     from ..speedgate import sg_menu
     while True:
         submenu_keuze = vraag_tekst("""
-                ===== welk submenu wil je doorlopen? ===== 
-                1 = autosluittijd 
-                2 = node id voor PXS Feig koppeling 
+                ===== welk submenu wil je doorlopen? =====
+                1 = autosluittijd
+                2 = node id voor PXS Feig koppeling
                 3 = hellingbaan regeling
                 4 = BMI instellingen
-                klaar = klaar met configureren en maak bestand aan. 
-                terug = terug naar adv. menu. 
+                klaar = klaar met configureren en maak bestand aan.
+                terug = terug naar adv. menu.
                 (enter = terug naar hoofdmenu)
                 """)
 
@@ -274,19 +274,19 @@ def alle_menus_sg_standalone(config, afsluiting):
 def keuzemenu_menus_ohd_standalone(config, afsluiting):
     while True:
         submenu_keuze = vraag_tekst("""
-                ===== welk submenu wil je doorlopen? ===== 
-                1 = autosluittijd 
-                2 = motor instellingen 
-                3 = zelftest 
-                4 = verkeerslichten 
-                5 = node id voor PXS Feig koppeling 
+                ===== welk submenu wil je doorlopen? =====
+                1 = autosluittijd
+                2 = motor instellingen
+                3 = zelftest
+                4 = verkeerslichten
+                5 = node id voor PXS Feig koppeling
                 6 = hellingbaan regeling
                 7 = BMI instellingen
                 8 = loopsnelheden instellen
-                9 = boost instellingen 
+                9 = boost instellingen
                 10 = positioneringssysteem
-                klaar = klaar met configureren en maak bestand aan. 
-                terug = terug naar adv. menu. 
+                klaar = klaar met configureren en maak bestand aan.
+                terug = terug naar adv. menu.
                 (enter = terug naar hoofdmenu)
                 """)
 
@@ -339,11 +339,21 @@ def alle_menus_ohd_standalone(config, afsluiting):
         from .motor_instellingen import motor_instelling_menu
         motor_instelling_menu(config)
 
+
+<< << << < HEAD
     if vraag_ja_nee("positioneringssysteem instellen? (y/n)   "):
         from .positioning_system_profile import positioning_system_profile
         positioning_system_profile(config)
 
     if vraag_ja_nee("loopsnelheden aanpassen (y/n)  "):
+        from .loopsnelheden import loopsnelheden_OHD_menu
+== == == =
+    if vraag_ja_nee("zelftest instellen? (y/n)"):
+        from .zelftest import zelftest_menu
+        zelftest_menu(config)
+
+    if vraag_ja_nee("loopsnelheden aanpassen? (y/n)"):
+>>>>>> > 1d65c80aa5a1037c246eb26b1b2ac6b185ceaa12
         from .loopsnelheden import loopsnelheden_OHD_menu
         loopsnelheden_OHD_menu(config)
 
