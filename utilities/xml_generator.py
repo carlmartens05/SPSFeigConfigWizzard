@@ -51,7 +51,7 @@ def maak_xml(bestandsnaam, afkorting, projectnummer, hoofd_parameter, sub_parame
     pad = os.path.join(
         os.path.expanduser("~"),
         "Downloads",
-        f"{bestandsnaam}_{projectnummer}_{vandaag}.xml" if projectnummer else f"{bestandsnaam}_{vandaag}.xml"
+        f"{projectnummer}_{bestandsnaam}_{vandaag}.xml" if projectnummer else f"{bestandsnaam}_{vandaag}.xml"
     )
 
     with open(pad, "w", encoding="iso-8859-1") as f:
