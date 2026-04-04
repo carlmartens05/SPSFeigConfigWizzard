@@ -15,7 +15,7 @@ from .parameter_logic import sorteer_parameters
 
 
 def maak_xml(bestandsnaam, afkorting, projectnummer, hoofd_parameter, sub_parameter):
-    vandaag = date.today().strftime("%Y-%m-%d")
+    vandaag = date.today().strftime("%d-%m-%Y")
 
     # projectnummer altijd hoofdparameter
     if projectnummer:
