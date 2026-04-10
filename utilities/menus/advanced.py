@@ -1,6 +1,5 @@
 # imports
 from ..input_helpers import *
-from .submenus.submenus import *
 
 
 # ===========================================================
@@ -36,22 +35,31 @@ def advanced_menu(config, afsluiting):
                 """)
 
             if submenu_keuze == "1":
+                from .submenus.auto_sluittijd import auto_sluittijd_menu
                 auto_sluittijd_menu(config, afsluiting)
             elif submenu_keuze == "2":
+                from .submenus.motor_instellingen import motor_instelling_menu
                 motor_instelling_menu(config)
             elif submenu_keuze == "3":
+                from .submenus.zelftest import zelftest_menu
                 zelftest_menu(config, afsluiting)
             elif submenu_keuze == "4":
+                from .submenus.verkeerslichten import verkeerslichten_menu
                 verkeerslichten_menu(config, afsluiting)
             elif submenu_keuze == "5":
+                from submenus.node_id import node_id_menu
                 node_id_menu(config)
             elif submenu_keuze == "6":
+                from .submenus.heling_baan_regeling import heling_baan_regeling_menu
                 heling_baan_regeling_menu(config)
             elif submenu_keuze == "7":
+                from .submenus.bmi import BMI_menu
                 BMI_menu(config)
             elif submenu_keuze == "8":
+                from .submenus.loopsnelheden import loopsnelheden_OHD_menu
                 loopsnelheden_OHD_menu(config)
             elif submenu_keuze == "9":
+                from .submenus.onderhouds_interval import onderhouds_interval_menu
                 onderhouds_interval_menu(config, "adv")
             elif submenu_keuze == "10":
                 from .submenus.boost import boost_menu

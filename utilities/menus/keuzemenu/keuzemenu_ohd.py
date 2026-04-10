@@ -1,5 +1,5 @@
 # ============================
-# subemenu's v0.6
+# keuzemenu overheadeuren v0.1
 # ============================
 
 # imports
@@ -7,15 +7,6 @@
 from ...input_helpers import *
 from ...parameter_logic import bereken_input_parameter_code
 
-
-# ============================
-# keuzemenu voor subemenu's
-# ============================
-
-# == speedgate ==
-
-
-# == overheaddeur ==
 
 # === ohd standalone ===
 
@@ -40,28 +31,28 @@ def keuzemenu_menus_ohd_standalone(config, afsluiting):
                 """)
 
         if submenu_keuze == "1":
-            from .auto_sluittijd import auto_sluittijd_menu
+            from ..submenus.auto_sluittijd import auto_sluittijd_menu
             auto_sluittijd_menu(config, afsluiting)
         elif submenu_keuze == "2":
-            from .motor_instellingen import motor_instelling_menu
+            from ..submenus.motor_instellingen import motor_instelling_menu
             motor_instelling_menu(config)
         elif submenu_keuze == "3":
-            from .zelftest import zelftest_menu
+            from ..submenus.zelftest import zelftest_menu
             zelftest_menu(config, afsluiting)
         elif submenu_keuze == "4":
-            from .verkeerslichten import verkeerslichten_menu
+            from ..submenus.verkeerslichten import verkeerslichten_menu
             verkeerslichten_menu(config, afsluiting)
         elif submenu_keuze == "5":
-            from .node_id import node_id_menu
+            from ..submenus.node_id import node_id_menu
             node_id_menu(config)
         elif submenu_keuze == "6":
-            from .heling_baan_regeling import heling_baan_regeling_menu
+            from ..submenus.heling_baan_regeling import heling_baan_regeling_menu
             heling_baan_regeling_menu(config)
         elif submenu_keuze == "7":
-            from .bmi import BMI_menu
+            from ..submenus.bmi import BMI_menu
             BMI_menu(config)
         elif submenu_keuze == "8":
-            from .loopsnelheden import loopsnelheden_OHD_menu
+            from ..submenus.loopsnelheden import loopsnelheden_OHD_menu
             loopsnelheden_OHD_menu(config)
         # elif submenu_keuze == "9":
         #    from .onderhouds_interval import onderhouds_interval_menu
@@ -70,7 +61,7 @@ def keuzemenu_menus_ohd_standalone(config, afsluiting):
             from submenus.boost import boost_menu
             boost_menu(config)
         elif submenu_keuze == "10":
-            from .positioning_system_profile import positioning_system_profile
+            from ..submenus.positioning_system_profile import positioning_system_profile
             positioning_system_profile(config)
         elif submenu_keuze == "klaar":
             return True
@@ -85,52 +76,52 @@ def keuzemenu_menus_ohd_standalone(config, afsluiting):
 
 def alle_menus_ohd_standalone(config, afsluiting):
     if vraag_ja_nee("Motor instellingen aanpassen? (y/n) "):
-        from .motor_instellingen import motor_instelling_menu
+        from ..submenus.motor_instellingen import motor_instelling_menu
         motor_instelling_menu(config)
 
-    if vraag_ja_nee("positioneringssysteem instellen? (y/n)   "):
-        from .positioning_system_profile import positioning_system_profile
+    if vraag_ja_nee("positioneringssysteem instellen? (y/n)"):
+        from ..submenus.positioning_system_profile import positioning_system_profile
         positioning_system_profile(config)
 
-    if vraag_ja_nee("loopsnelheden aanpassen (y/n)  "):
-        from .loopsnelheden import loopsnelheden_OHD_menu
-    if vraag_ja_nee("zelftest instellen? (y/n)"):
-        from .zelftest import zelftest_menu
-        zelftest_menu(config, "ohd")
-
-    if vraag_ja_nee("loopsnelheden aanpassen? (y/n)"):
-        from .loopsnelheden import loopsnelheden_OHD_menu
+    if vraag_ja_nee("loopsnelheden aanpassen (y/n)"):
+        from ..submenus.loopsnelheden import loopsnelheden_OHD_menu
         loopsnelheden_OHD_menu(config)
 
-    if vraag_ja_nee("boost intellen? (y/n)   "):
-        from .boost import boost_menu
+    if vraag_ja_nee("zelftest instellen? (y/n)"):
+        from ..submenus.zelftest import zelftest_menu
+        zelftest_menu(config, "ohd")
+
+    if not config.boost_ingesteld() and vraag_ja_nee("boost instellen? (y/n)"):
+        from ..submenus.boost import boost_menu
         boost_menu(config)
 
-    if vraag_ja_nee("Verkeerslichtsturing instellen? (y/n) "):
-        from .verkeerslichten import verkeerslichten_menu
+    if vraag_ja_nee("Verkeerslichtsturing instellen? (y/n)"):
+        from ..submenus.verkeerslichten import verkeerslichten_menu
         verkeerslichten_menu(config, "ohd")
-        if vraag_ja_nee("Hellingbaan regeling instellen? (y/n) "):
-            from .heling_baan_regeling import heling_baan_regeling_menu
+
+        if vraag_ja_nee("Hellingbaan regeling instellen? (y/n)"):
+            from ..submenus.heling_baan_regeling import heling_baan_regeling_menu
             heling_baan_regeling_menu(config)
         else:
-            if vraag_ja_nee("Autosluittijd aanpassen? (y/n) "):
-                from .auto_sluittijd import auto_sluittijd_menu
+            if vraag_ja_nee("Autosluittijd aanpassen? (y/n)"):
+                from ..submenus.auto_sluittijd import auto_sluittijd_menu
                 auto_sluittijd_menu(config, "ohd")
 
     else:
-        if vraag_ja_nee("Autosluittijd aanpassen? (y/n) "):
+        if vraag_ja_nee("Autosluittijd aanpassen? (y/n)"):
+            from ..submenus.auto_sluittijd import auto_sluittijd_menu
             auto_sluittijd_menu(config, "ohd")
 
-    if vraag_ja_nee("Node ID instellen voor PXS Feig koppeling? (y/n) "):
-        from .node_id import node_id_menu
+    if vraag_ja_nee("Node ID instellen voor PXS Feig koppeling? (y/n)"):
+        from ..submenus.node_id import node_id_menu
         node_id_menu(config)
 
-    if vraag_ja_nee("BMI instellen? (y/n) "):
-        from .bmi import BMI_menu
+    if vraag_ja_nee("BMI instellen? (y/n)"):
+        from ..submenus.bmi import BMI_menu
         BMI_menu(config)
 
     # if vraag_ja_nee("wil je een onderhoudsteller instellen? (y/n) "):
-    #    from .onderhouds_interval import onderhouds_interval_menu
+    #    from ..submenus.onderhouds_interval import onderhouds_interval_menu
     #    onderhouds_interval_menu(config, "ohd")
 
     return True
