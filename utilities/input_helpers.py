@@ -15,7 +15,7 @@ def vraag_ja_nee(vraag):
 def vraag_getal(vraag):
     while True:
         invoer = input(
-            vraag + " (Enter = overslaan of standaardwaarde): ").lower()
+            vraag + " (Enter = overslaan): ").lower()
         if invoer == "":
             return None
         if invoer.isdigit():

@@ -1,6 +1,6 @@
 # imports
 from ..input_helpers import *
-from .submenus.submenus import *
+from .keuzemenu.keuzemenu_sg import *
 
 
 # ======================
@@ -19,17 +19,17 @@ def sg_menu(config):
 
         print("standaard parameters voor een PLC sturing toegevoegd. ")
 
-        if vraag_ja_nee("wil je alle menu's doorlopen of wil je kiezen welke menu's ingesteld moeten worden? kiezen = y, alles = n "):
-            keuzemenu_menus_sg_plc(config, "sg")
-        else:
+        if vraag_ja_nee("wil je alle menu's doorlopen? of wil je kiezen welke menu's ingesteld moeten worden? kiezen = n, alles = y "):
             alle_menus_sg_plc(config, "sg")
+        else:
+            keuzemenu_menus_sg_plc(config, "sg")
         return True
 
     elif sg_plc == "n":
-        if vraag_ja_nee("wil je alle menu's doorlopen of wil je kiezen welke menu's ingesteld moeten worden? kiezen = y, alles = n "):
-            keuzemenu_menus_sg_standalone(config, "sg")
-        else:
+        if vraag_ja_nee("wil je alle menu's doorlopen? of wil je kiezen welke menu's ingesteld moeten worden? kiezen = n, alles = y "):
             alle_menus_sg_standalone(config, "sg")
+        else:
+            keuzemenu_menus_sg_standalone(config, "sg")
         return True
 
     elif sg_plc == "terug":
