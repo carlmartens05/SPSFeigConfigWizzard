@@ -12,12 +12,12 @@ def BMI_menu(config):
         'op welke input van de besturing zit de BMI aangesloten? standaard = 6, enter = 6')
     if input_bmi is None or input_bmi == "":
         input_bmi = "6"
-        config.hoofd_parameter.append(("0506", "165"))
+        config.hoofd_parameter.append(("0506", "0165"))
     else:
         code = bereken_input_parameter_code(input_bmi)
         if code is None:
             return BMI_menu(config)
-        config.hoofd_parameter.append((code, "165"))
+        config.hoofd_parameter.append((code, "0165"))
     print(f'input {input_bmi} wordt gebruikt voor BMI.')
 
     eindstand_bmi = vraag_getal(
