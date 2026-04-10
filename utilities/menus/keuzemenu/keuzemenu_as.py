@@ -1,5 +1,5 @@
 # ============================
-# keuzemenu slagbomen v0.1
+# keuzemenu slagbomen v0.2
 # ============================
 
 # imports

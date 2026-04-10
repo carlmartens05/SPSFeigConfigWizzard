@@ -4,7 +4,7 @@ from .keuzemenu.keuzemenu_sg import *
 
 
 # ======================
-# Speedgates v0.2
+# Speedgates v0.3
 # ======================
 
 def sg_menu(config):

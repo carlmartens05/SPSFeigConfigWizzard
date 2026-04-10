@@ -1,5 +1,5 @@
 # =========================
-# vraag hulpfuncties v0.1
+# vraag hulpfuncties v0.2
 # =========================
 
 def vraag_ja_nee(vraag):

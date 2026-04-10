@@ -1,5 +1,5 @@
 # =========================
-# motor instellingen v0.5
+# motor instellingen v0.6
 # =========================
 
 from ...input_helpers import vraag_getal, vraag_ja_nee

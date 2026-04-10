@@ -3,7 +3,7 @@ from ..input_helpers import *
 
 
 # ===========================================================
-# advanced menu voor handmatige submenu's en parameters v0.2
+# advanced menu voor handmatige submenu's en parameters v0.3
 # ===========================================================
 
 def advanced_menu(config, afsluiting):

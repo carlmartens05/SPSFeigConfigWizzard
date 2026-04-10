@@ -10,7 +10,7 @@ import os
 from .parameter_logic import sorteer_parameters
 
 # ======================
-# XML generator
+# XML generator v0.2
 # ======================
 
 

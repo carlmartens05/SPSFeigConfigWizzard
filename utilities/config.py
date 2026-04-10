@@ -1,5 +1,5 @@
 # ====================
-# config for globals
+# config for globals v0.2
 # ====================
 
 class Config:

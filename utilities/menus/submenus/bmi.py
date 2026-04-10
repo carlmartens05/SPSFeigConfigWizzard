@@ -3,7 +3,7 @@ from ...input_helpers import vraag_getal, vraag_ja_nee, vraag_tekst
 from ...parameter_logic import bereken_input_parameter_code
 
 # ======================
-# BMI v0.1
+# BMI v0.2
 # ======================
 
 

@@ -2,7 +2,7 @@
 from ..input_helpers import vraag_getal, vraag_ja_nee, vraag_tekst
 from .keuzemenu.keuzemenu_as import *
 # ======================
-# Slagbomen v0.3
+# Slagbomen v0.4
 # ======================
 
 
