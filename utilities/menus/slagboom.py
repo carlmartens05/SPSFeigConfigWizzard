@@ -1,9 +1,8 @@
 # imports
 from ..input_helpers import vraag_getal, vraag_ja_nee, vraag_tekst
-from .submenus.submenus import *
-
+from .keuzemenu.keuzemenu_as import *
 # ======================
-# Slagbomen v0.2
+# Slagbomen v0.3
 # ======================
 
 
@@ -14,11 +13,12 @@ def as_menu(config):
         if waarde is not None:
             config.hoofd_parameter.append(("0991", waarde))
 
-        keuze = input("Wordt de slagboom aangestuurd door een PLC of standalone (PLC = open/dicht/stop, plc maar geen open/dicht/stop? kies standalone.) (plc/standalone)?   ").lower()
+        keuze = input(
+            "Wordt de slagboom aangestuurd door een PLC (y/n)? plc maar geen open/dicht/stop? kies nee  ").lower()
 
-        if keuze == "plc":
+        if keuze == "y":
             return as_plc_menu(config)
-        elif keuze == "standalone":
+        elif keuze == "n":
             return as_standalone_menu(config)
         elif keuze == "terug":
             return False
@@ -33,16 +33,16 @@ def as_plc_menu(config):
         [("0010", "0"), ("002a", "0"), ("04b7", "0"), ("0890", "0")])
     print("standaard parameters voor een PLC sturing toegevoegd. ")
 
-    if vraag_ja_nee("wil je alle menu's doorlopen of wil je kiezen welke menu's ingesteld moeten worden? kiezen = y, alles = n "):
-        keuzemenu_menus_as_plc(config, "as")
-    else:
+    if vraag_ja_nee("wil je alle menu's doorlopen? of wil je kiezen welke menu's ingesteld moeten worden? kiezen = n, alles = y "):
         alle_menus_as_plc(config, "as")
+    else:
+        keuzemenu_menus_as_plc(config, "as")
     return True
 
 
 def as_standalone_menu(config):
-    if vraag_ja_nee("wil je alle menu's doorlopen of wil je kiezen welke menu's ingesteld moeten worden? kiezen = y, alles = n "):
-        keuzemenu_menus_as_standalone(config, "as")
-    else:
+    if vraag_ja_nee("wil je alle menu's doorlopen? of wil je kiezen welke menu's ingesteld moeten worden? kiezen = n, alles = y "):
         alle_menus_as_standalone(config, "as")
+    else:
+        keuzemenu_menus_as_standalone(config, "as")
     return True
