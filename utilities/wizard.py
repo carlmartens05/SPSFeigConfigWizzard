@@ -16,7 +16,7 @@ def wizard(config):
     while True:
         afsluiting = input("""
         ====================================================================
-        ===   SPS Feig config wizard V0.3  made by CMA   ===
+        ===   SPS Feig config wizard V0.4  made by CMA   ===
         ====================================================================
 
         Op welk soort afsluiting zit de besturing aangesloten? (as/sg/ohd)
