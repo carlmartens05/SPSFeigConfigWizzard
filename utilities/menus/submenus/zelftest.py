@@ -1,6 +1,6 @@
 # imports
 from ...input_helpers import vraag_getal, vraag_ja_nee, vraag_tekst
-from ...parameter_logic import bereken_input_parameter_code
+from ...parameter_logic import bereken_input_parameter_code_zelftest
 
 # ======================
 # zelftest menu v0.1
@@ -13,7 +13,7 @@ def zelftest_menu(config, afsluiting):
 
     inputnr = vraag_getal("Welke input wil je zelftesten? (1-15 of 21-26) ")
     if inputnr:
-        code = bereken_input_parameter_code(inputnr)
+        code = bereken_input_parameter_code_zelftest(inputnr)
         if code is None:
             return zelftest_menu(config, afsluiting)
         config.sub_parameter.append((code, "1"))

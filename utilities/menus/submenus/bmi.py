@@ -1,6 +1,6 @@
 # imports
 from ...input_helpers import vraag_getal, vraag_ja_nee, vraag_tekst
-from ...parameter_logic import bereken_input_parameter_code
+from ...parameter_logic import bereken_input_parameter_code_bmi
 
 # ======================
 # BMI v0.2
@@ -14,7 +14,7 @@ def BMI_menu(config):
         input_bmi = "6"
         config.hoofd_parameter.append(("0506", "0165"))
     else:
-        code = bereken_input_parameter_code(input_bmi)
+        code = bereken_input_parameter_code_bmi(input_bmi)
         if code is None:
             return BMI_menu(config)
         config.hoofd_parameter.append((code, "0165"))

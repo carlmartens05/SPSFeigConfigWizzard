@@ -5,7 +5,7 @@
 # imports
 # == algemeen ==
 from ...input_helpers import *
-from ...parameter_logic import bereken_input_parameter_code
+from ...parameter_logic import *
 
 
 # === sg plc's ===
