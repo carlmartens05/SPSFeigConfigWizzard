@@ -1,4 +1,4 @@
-laatste update van de .exe = 18-3-26
+laatste update van de .exe = 21-4-26 Nieuwste Versie :)
 
 er is keuze uit de volgende config menu's:
 1. auto sluittijd                        v0.1        as/sg/ohd     

@@ -22,7 +22,7 @@ def motor_instelling_menu(config):
                 0 = alles zelf instellen
                 1 = GfA SE 9.24  (part no. 10002188 )
                 """)
-    if motor_profile == 0:
+    if motor_profile == "0":
         freq = vraag_getal("Frequentie motor (P.100 Hz)")
         if freq is not None:
             config.set_parameter("0100", freq)
@@ -40,17 +40,12 @@ def motor_instelling_menu(config):
         if volt is not None:
             config.set_parameter("0103", volt)
 
-    if motor_profile == 1:
-        config.set_parameter("0100", "50")
-        config.set_parameter("0101", "21")
-        config.set_parameter("0102", "60")
-        config.set_parameter("0100", "230")
-        print(" standaard parameters toegevoegd voor de GfA SE 9.24 (part no. 10002188 ) ")
-
-    rotate = vraag_getal(
-        "draairichting van de motor, 0 = rechts draaiend en 1 = links draaiend")
-    if rotate is not None:
-        config.set_parameter("0130", rotate)
+    if motor_profile == "1":
+        config.sub_parameter.append(("0100", "50"))
+        config.sub_parameter.append(("0101", "21"))
+        config.sub_parameter.append(("0102", "60"))
+        config.sub_parameter.append(("0103", "230"))
+        print("standaard parameters toegevoegd voor de GfA SE 9.24 (part no. 10002188 ) ")
 
     # Boost alleen vragen als nog niet ingesteld
     if not config.boost_ingesteld() and vraag_ja_nee("wil je een boost instellen? (y/n)"):
