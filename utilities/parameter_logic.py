@@ -1,5 +1,5 @@
 # ===========================
-# logic for parameters v0.1
+# logic for parameters v0.2
 # ===========================
 
 
@@ -39,7 +39,7 @@ def bereken_input_parameter_code_zelftest(inputnr):
 def bereken_input_parameter_code_bmi(inputnr):
     """
     Zet inputnummer om naar de juiste parametercode.
-    Inputs 1-15 → 05{hex}a
+    Inputs 1-15 → 050{hex}
     Inputs 16-20 → ongeldig
     Inputs 21-26 → 0a1a t/m 0a6a
     """

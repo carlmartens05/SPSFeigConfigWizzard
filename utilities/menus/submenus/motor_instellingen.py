@@ -1,5 +1,5 @@
 # =========================
-# motor instellingen v0.6
+# motor instellingen v0.7
 # =========================
 
 from ...input_helpers import vraag_getal, vraag_ja_nee
@@ -17,21 +17,35 @@ def motor_instelling_menu(config):
     config.sub_parameter.append(("0148", "100"))
     config.sub_parameter.append(("0165", "2"))
 
-    freq = vraag_getal("Frequentie motor (P.100 Hz)")
-    if freq is not None:
-        config.set_parameter("0100", freq)
+    motor_profile = vraag_getal("""
+                ===== wil je een motor profiel selecteren? ( controleer altijd zelf of de ingestelde waarde klopt!!!) =====
+                0 = alles zelf instellen
+                1 = GfA SE 9.24  (part no. 10002188 )
+                """)
+    if motor_profile == 0:
+        freq = vraag_getal("Frequentie motor (P.100 Hz)")
+        if freq is not None:
+            config.set_parameter("0100", freq)
 
-    amp = vraag_getal("Amperage motor (P.101) laat de punt weg dus 2.1A = 21")
-    if amp is not None:
-        config.set_parameter("0101", amp)
+        amp = vraag_getal(
+            "Amperage motor (P.101) laat de punt weg dus 2.1A = 21")
+        if amp is not None:
+            config.set_parameter("0101", amp)
 
-    cosphi = vraag_getal("Cos phi motor (P.102)")
-    if cosphi is not None:
-        config.set_parameter("0102", cosphi)
+        cosphi = vraag_getal("Cos phi motor (P.102)")
+        if cosphi is not None:
+            config.set_parameter("0102", cosphi)
 
-    volt = vraag_getal("Voltage motor (P.103)")
-    if volt is not None:
-        config.set_parameter("0103", volt)
+        volt = vraag_getal("Voltage motor (P.103)")
+        if volt is not None:
+            config.set_parameter("0103", volt)
+
+    if motor_profile == 1:
+        config.set_parameter("0100", "50")
+        config.set_parameter("0101", "21")
+        config.set_parameter("0102", "60")
+        config.set_parameter("0100", "230")
+        print(" standaard parameters toegevoegd voor de GfA SE 9.24 (part no. 10002188 ) ")
 
     rotate = vraag_getal(
         "draairichting van de motor, 0 = rechts draaiend en 1 = links draaiend")

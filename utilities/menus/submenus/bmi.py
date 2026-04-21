@@ -3,7 +3,7 @@ from ...input_helpers import vraag_getal, vraag_ja_nee, vraag_tekst
 from ...parameter_logic import bereken_input_parameter_code_bmi
 
 # ======================
-# BMI v0.2
+# BMI v0.3
 # ======================
 
 
@@ -41,5 +41,6 @@ def BMI_menu(config):
         ' is de BMI een maak of een verbreek contact? maak = 0, verbreek = 1, enter = verbreek ')
     if no_nc_bmi is None or no_nc_bmi == "":
         config.sub_parameter.append((f"05{input_bmi}2", "1"))
+        print("input ingesteld als verbreekcontact ")
     else:
         config.sub_parameter.append((f"05{input_bmi}2", no_nc_bmi))

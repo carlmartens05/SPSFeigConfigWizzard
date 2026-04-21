@@ -1,5 +1,5 @@
 # ======================
-# wizard v0.1
+# wizard v0.4.1
 # ======================
 
 from utilities.input_helpers import *
@@ -16,7 +16,7 @@ def wizard(config):
     while True:
         afsluiting = input("""
         ====================================================================
-        ===   SPS Feig config wizard V0.4  made by CMA   ===
+        ===   SPS Feig config wizard V0.4.1  made by CMA   ===
         ====================================================================
 
         Op welk soort afsluiting zit de besturing aangesloten? (as/sg/ohd)

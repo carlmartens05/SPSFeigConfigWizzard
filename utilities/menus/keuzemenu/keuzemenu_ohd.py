@@ -1,5 +1,5 @@
 # ============================
-# keuzemenu overheadeuren v0.2
+# keuzemenu overheadeuren v0.3
 # ============================
 
 # imports
@@ -125,3 +125,74 @@ def alle_menus_ohd_standalone(config, afsluiting):
     #    onderhouds_interval_menu(config, "ohd")
 
     return True
+
+
+# ohd plc
+
+def keuzemenu_menus_ohd_plc(config, afsluiting):
+    while True:
+        submenu_keuze = vraag_tekst("""
+                ===== welk submenu wil je doorlopen? =====
+                1 = motor instellingen
+                2 = zelftest
+                3 = node id voor PXS Feig koppeling
+                4 = loopsnelheden instellen
+                5 = boost instellingen
+                6 = positioneringssysteem
+                klaar = klaar met configureren en maak bestand aan.
+                terug = terug naar ohd menu.
+                (enter = terug naar hoofdmenu)
+                """)
+        if submenu_keuze == "1":
+            from ..submenus.motor_instellingen import motor_instelling_menu
+            motor_instelling_menu(config)
+        elif submenu_keuze == "2":
+            from ..submenus.zelftest import zelftest_menu
+            zelftest_menu(config, afsluiting)
+        elif submenu_keuze == "3":
+            from ..submenus.node_id import node_id_menu
+            node_id_menu(config)
+        elif submenu_keuze == "4":
+            from ..submenus.loopsnelheden import loopsnelheden_OHD_menu
+            loopsnelheden_OHD_menu(config)
+        elif submenu_keuze == "5":
+            from submenus.boost import boost_menu
+            boost_menu(config)
+        elif submenu_keuze == "6":
+            from ..submenus.positioning_system_profile import positioning_system_profile
+            positioning_system_profile(config)
+        elif submenu_keuze == "klaar":
+            return True
+        elif submenu_keuze == "terug":
+            from ..overheaddeur import ohd_plc_menu
+            return ohd_plc_menu(config, afsluiting)
+        elif submenu_keuze is None or submenu_keuze == "":
+            return False
+        else:
+            print("Ongeldige keuze.")
+
+
+def alle_menus_ohd_plc(config, afsluiting):
+    if vraag_ja_nee("Motor instellingen aanpassen? (y/n) "):
+        from ..submenus.motor_instellingen import motor_instelling_menu
+        motor_instelling_menu(config)
+
+    if vraag_ja_nee("positioneringssysteem instellen? (y/n)"):
+        from ..submenus.positioning_system_profile import positioning_system_profile
+        positioning_system_profile(config)
+
+    if vraag_ja_nee("loopsnelheden aanpassen (y/n)"):
+        from ..submenus.loopsnelheden import loopsnelheden_OHD_menu
+        loopsnelheden_OHD_menu(config)
+
+    if vraag_ja_nee("zelftest instellen? (y/n)"):
+        from ..submenus.zelftest import zelftest_menu
+        zelftest_menu(config, "ohd")
+
+    if not config.boost_ingesteld() and vraag_ja_nee("boost instellen? (y/n)"):
+        from ..submenus.boost import boost_menu
+        boost_menu(config)
+
+    if vraag_ja_nee("Node ID instellen voor PXS Feig koppeling? (y/n)"):
+        from ..submenus.node_id import node_id_menu
+        node_id_menu(config)

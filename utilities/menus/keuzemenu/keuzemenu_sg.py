@@ -1,5 +1,5 @@
 # ============================
-# keuzemenu speedgate v0.2
+# keuzemenu speedgate v0.3
 # ============================
 
 # imports
@@ -19,7 +19,7 @@ def keuzemenu_menus_sg_plc(config, afsluiting):
                 1 = node id voor PXS Feig koppeling
                 2 = BMI instellingen
                 klaar = klaar met configureren en maak bestand aan.
-                terug = terug naar adv. menu.
+                terug = terug naar sg menu.
                 (enter = terug naar hoofdmenu)
                 """)
 

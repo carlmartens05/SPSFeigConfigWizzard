@@ -28,3 +28,7 @@ def ohd_plc_menu(config):
     config.sub_parameter.extend(
         [("0522", "1"), ("0010", "0"), ("0011", "0"), ("0012", "0")])
     print("standaard parameters voor een PLC sturing toegevoegd. ")
+    if vraag_ja_nee("wil je alle menu's doorlopen? of wil je kiezen welke menu's ingesteld moeten worden? kiezen = n, alles = y "):
+        alle_menus_ohd_plc(config, "ohd")
+    else:
+        keuzemenu_menus_ohd_plc(config, "ohd")
