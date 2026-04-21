@@ -5,7 +5,7 @@ from .keuzemenu.keuzemenu_ohd import *
 
 
 # ======================
-# Overheaddeuren v0.4
+# Overheaddeuren v0.5
 # ======================
 
 
@@ -18,7 +18,7 @@ def ohd_menu(config):
         else:
             keuzemenu_menus_ohd_standalone(config, "ohd")
     if ohd_plc == "y":
-        ohd_plc_menu(config, "ohd")
+        ohd_plc_menu(config)
     return True
 
 
