@@ -28,7 +28,8 @@ def loopsnelheden_OHD_menu(config):
 
         # = stop
         config.sub_parameter.append(("0374", "400"))
-        config.sub_parameter.append(("0372", "150"))
+        # stopramp safety edge
+        config.sub_parameter.append(("0372", "400"))
         config.sub_parameter.append(("0382", "400"))
         config.sub_parameter.append(("0388", "200"))
 
