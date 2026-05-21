@@ -21,5 +21,5 @@ def verkeerslichten_menu(config, afsluiting):
         config.hoofd_parameter.extend(
             [("0701", "1210"), ("0702", "1201"), ("0501", "0110"), ("0503", "0106")])
         config.sub_parameter.extend(
-            [("0716", "2"), ("0719", "2"), ("071f", "19"), ("0726", "0"), ("0729", "2"), ("072f", "19")])
+            [("0716", "2"), ("0719", "5"), ("071f", "19"), ("0726", "0"), ("0729", "5"), ("072f", "19")])
         print("input 1 wordt gebuikt als open in en input 3 als open uit.")
