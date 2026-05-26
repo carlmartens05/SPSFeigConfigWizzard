@@ -1,5 +1,5 @@
 # =========================
-# motor instellingen v0.7
+# motor instellingen v0.8
 # =========================
 
 from ...input_helpers import vraag_getal, vraag_ja_nee
@@ -48,7 +48,7 @@ def motor_instelling_menu(config):
         config.sub_parameter.append(("0103", "230"))
         print("standaard parameters toegevoegd voor de GfA SE 9.24 (part no. 10002188 ) ")
 
-    if motor_profile == "1":
+    if motor_profile == "2":
         config.sub_parameter.append(("0100", "50"))
         config.sub_parameter.append(("0101", "31"))
         config.sub_parameter.append(("0102", "51"))
