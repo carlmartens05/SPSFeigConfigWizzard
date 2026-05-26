@@ -15,6 +15,7 @@ def keuzemenu_menus_ohd_standalone(config, afsluiting):
     while True:
         submenu_keuze = vraag_tekst("""
                 ===== welk submenu wil je doorlopen? =====
+                0 = standaard inputs
                 1 = autosluittijd
                 2 = motor instellingen
                 3 = zelftest
@@ -29,7 +30,9 @@ def keuzemenu_menus_ohd_standalone(config, afsluiting):
                 terug = terug naar adv. menu.
                 (enter = terug naar hoofdmenu)
                 """)
-
+        if submenu_keuze == "0":
+            from ..submenus.inputs import standaard_inputs_OHD
+            standaard_inputs_OHD(config)
         if submenu_keuze == "1":
             from ..submenus.auto_sluittijd import auto_sluittijd_menu
             auto_sluittijd_menu(config, afsluiting)
@@ -75,6 +78,10 @@ def keuzemenu_menus_ohd_standalone(config, afsluiting):
 
 
 def alle_menus_ohd_standalone(config, afsluiting):
+    if vraag_ja_nee("Wil je de standaard inputs inladen voor een standalone overheaddeur?(y/n)"):
+        from ..submenus.inputs import standaard_inputs_OHD
+        standaard_inputs_OHD(config)
+
     if vraag_ja_nee("Motor instellingen aanpassen? (y/n) "):
         from ..submenus.motor_instellingen import motor_instelling_menu
         motor_instelling_menu(config)
