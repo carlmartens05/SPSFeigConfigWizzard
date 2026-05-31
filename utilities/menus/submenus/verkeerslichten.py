@@ -4,7 +4,7 @@ from ...parameter_logic import *
 
 
 # ======================
-# verkeerslichten v0.2
+# verkeerslichten v0.3
 # ======================
 
 
