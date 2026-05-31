@@ -13,6 +13,9 @@ class Config:
     def boost_ingesteld(self):
         return self.has_parameter("0140") or self.has_parameter("0145")
 
+    def opensturing_ingesteld(self):
+        return self.has_parameter("0501") or self.has_parameter("0503")
+
     def set_parameter(self, code, value):
         for i, (c, _) in enumerate(self.sub_parameter):
             if c == code:

@@ -2,6 +2,7 @@
 from ...input_helpers import vraag_getal, vraag_ja_nee, vraag_tekst
 from ...parameter_logic import *
 
+
 # ======================
 # verkeerslichten v0.2
 # ======================
@@ -19,7 +20,10 @@ def verkeerslichten_menu(config, afsluiting):
 
     if afsluiting in ("ohd"):
         config.hoofd_parameter.extend(
-            [("0701", "1210"), ("0702", "1201"), ("0501", "0110"), ("0503", "0106")])
+            [("0701", "1210"), ("0702", "1201")])
+        if not config.opensturing_ingesteld:
+            config.hoofd_parameter.extend(
+                [("0501", "0110"), ("0503", "0106")])
         config.sub_parameter.extend(
             [("0716", "2"), ("0719", "5"), ("071f", "19"), ("0726", "0"), ("0729", "5"), ("072f", "19")])
         print("input 1 wordt gebuikt als open in en input 3 als open uit.")
