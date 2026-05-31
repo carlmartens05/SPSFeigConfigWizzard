@@ -3,15 +3,15 @@ from ...input_helpers import vraag_getal, vraag_ja_nee, vraag_tekst
 from ...parameter_logic import *
 
 # ======================
-# heling baan regeling v0.1
+# heling baan regeling v0.2
 # ======================
 
 
 def heling_baan_regeling_menu(config):
     helling_minimale_groentijd = vraag_getal(
-        "minimal greentime (P.017): wat is de minimale tijd dat het groene verkeerslicht aan moet blijven staan zonder dat er een voertuig door de afsluiting is gereden, voordat deze omschakeld naar de andere zijde.")
+        "minimal greentime (P.015): wat is de minimale tijd dat het groene verkeerslicht aan moet blijven staan zonder dat er een voertuig door de afsluiting is gereden, voordat deze omschakeld naar de andere zijde.")
     if helling_minimale_groentijd is not None:
-        config.sub_parameter.append(("0017", helling_minimale_groentijd))
+        config.sub_parameter.append(("0015", helling_minimale_groentijd))
 
     hellingbaan_roodtijd = vraag_getal(
         "Waiting-time between changing green-direction(P.01a): de tijd dat beide verkeerslichten op rood staan en dus de tijd dat het voertuig nodig heeft om de gehele afstand naar het andere verkeerslicht af te leggen.")
