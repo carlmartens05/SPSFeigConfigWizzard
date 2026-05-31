@@ -12,7 +12,7 @@ from ...parameter_logic import *
 
 
 def keuzemenu_menus_as_plc(config, afsluiting):
-    from slagboom import as_plc_menu
+    from ..slagboom import as_plc_menu
     while True:
         submenu_keuze = vraag_tekst("""
                 ===== welk submenu wil je doorlopen? =====
