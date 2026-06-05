@@ -3,7 +3,7 @@ from ...input_helpers import vraag_getal, vraag_ja_nee, vraag_tekst
 from ...parameter_logic import *
 
 # ==================================
-#  positioning_system_profile v0.1
+#  positioning_system_profile v0.2
 # ==================================
 
 
@@ -23,9 +23,16 @@ def positioning_system_profile(config):
         config.hoofd_parameter.append(("0205", "0001"))
     elif keuze == "2":
         config.hoofd_parameter.append(("0205", "0300"))
+        config.sub_parameter.append(("0218", "0"))
+        config.sub_parameter.append(("0938", "99"))
     elif keuze == "3":
         config.hoofd_parameter.append(("0205", "0700"))
+        config.sub_parameter.append(("0218", "0"))
+        config.sub_parameter.append(("0938", "99"))
     elif keuze == "4":
         config.hoofd_parameter.append(("0205", "0800"))
+        config.sub_parameter.append(("0218", "0"))
+        config.sub_parameter.append(("0938", "99"))
+
     elif keuze == "5":
         config.hoofd_parameter.append(("0205", "0900"))
