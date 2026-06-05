@@ -16,10 +16,12 @@ def loopsnelheden_OHD_menu(config):
         # R1 acceleration hz/s
         config.sub_parameter.append(("0312", "17"))
         config.sub_parameter.append(("0320", "35"))         # creep open hz.
-
         # dicht
         config.sub_parameter.append(("0162", "60"))         # max hz. close
         config.sub_parameter.append(("0350", "50"))         # close hz.
+        # deadman move
+        config.sub_parameter.append(("0390", "30"))         # Deadman open
+        config.sub_parameter.append(("0395", "30"))         # Deadman close
         # R5 acceleration hz/s
         config.sub_parameter.append(("0352", "25"))
         config.sub_parameter.append(("0360", "35"))         # creep close hz.
