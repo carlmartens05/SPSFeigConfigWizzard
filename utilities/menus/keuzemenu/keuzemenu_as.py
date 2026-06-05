@@ -1,5 +1,5 @@
 # ============================
-# keuzemenu slagbomen v0.3
+# keuzemenu slagbomen v0.4
 # ============================
 
 # imports
@@ -120,6 +120,10 @@ def alle_menus_as_standalone(config, afsluiting):
     if vraag_ja_nee("Zelftest instellen? (y/n)  "):
         from ..submenus.zelftest import zelftest_menu
         zelftest_menu(config, "as")
+
+    if vraag_ja_nee("wil je het detectortype instellen? (y/n)"):
+        from ..submenus.detector import detector_menu
+        detector_menu(config, afsluiting)
 
     if vraag_ja_nee("Verkeerslichtsturing instellen? (y/n) "):
         from ..submenus.verkeerslichten import verkeerslichten_menu

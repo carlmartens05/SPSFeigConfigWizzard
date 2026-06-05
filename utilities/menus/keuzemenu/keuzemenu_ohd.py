@@ -1,5 +1,5 @@
 # ============================
-# keuzemenu overheadeuren v0.3
+# keuzemenu overheadeuren v0.4
 # ============================
 
 # imports
@@ -81,6 +81,10 @@ def alle_menus_ohd_standalone(config, afsluiting):
     if vraag_ja_nee("Wil je de standaard inputs inladen voor een standalone overheaddeur?(y/n)"):
         from ..submenus.inputs import standaard_inputs_OHD
         standaard_inputs_OHD(config)
+
+    if vraag_ja_nee("wil je het detectortype instellen? (y/n)"):
+        from ..submenus.detector import detector_menu
+        detector_menu(config, afsluiting)
 
     if vraag_ja_nee("Motor instellingen aanpassen? (y/n) "):
         from ..submenus.motor_instellingen import motor_instelling_menu
@@ -191,6 +195,10 @@ def alle_menus_ohd_plc(config, afsluiting):
     if vraag_ja_nee("loopsnelheden aanpassen (y/n)"):
         from ..submenus.loopsnelheden import loopsnelheden_OHD_menu
         loopsnelheden_OHD_menu(config)
+
+    if vraag_ja_nee("wil je het detectortype instellen? (y/n)"):
+        from ..submenus.detector import detector_PLC_menu
+        detector_PLC_menu(config, afsluiting)
 
     if vraag_ja_nee("zelftest instellen? (y/n)"):
         from ..submenus.zelftest import zelftest_menu
