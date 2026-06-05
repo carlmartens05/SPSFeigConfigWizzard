@@ -3,7 +3,7 @@ from ...input_helpers import vraag_getal, vraag_ja_nee, vraag_tekst
 from ...parameter_logic import *
 
 # ======================
-# loopsnelheden v0.3
+# loopsnelheden v0.4
 # ======================
 
 
