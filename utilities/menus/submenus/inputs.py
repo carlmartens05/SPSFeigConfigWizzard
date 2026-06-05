@@ -1,9 +1,9 @@
 # imports
 from ...input_helpers import vraag_getal, vraag_ja_nee, vraag_tekst
-from ...parameter_logic import bereken_input_parameter_code
+from ...parameter_logic import *
 
 # ======================
-# inputs v0.1
+# inputs v0.3
 # ======================
 
 
