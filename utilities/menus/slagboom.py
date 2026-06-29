@@ -2,11 +2,12 @@
 from ..input_helpers import vraag_getal, vraag_ja_nee, vraag_tekst
 from .keuzemenu.keuzemenu_as import *
 # ======================
-# Slagbomen v0.4
+# Slagbomen v0.5
 # ======================
 
 
 def as_menu(config):
+    config.hoofd_parameter.append(("0999", "3126"))
     while True:
         waarde = vraag_getal(
             'welk profiel heeft de slagboom volgens de sticker op de besturing? (zie de handleiding van Bormet voor meer info)  ')

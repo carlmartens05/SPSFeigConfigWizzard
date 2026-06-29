@@ -5,11 +5,12 @@ from .keuzemenu.keuzemenu_ohd import *
 
 
 # ======================
-# Overheaddeuren v0.5
+# Overheaddeuren v0.6
 # ======================
 
 
 def ohd_menu(config):
+    config.hoofd_parameter.append(("0999", "0004"))
     ohd_plc = input(
         "Wordt de overheaddeur aangestuurd door een PLC (y/n)? plc maar geen open/dicht/stop? kies nee  ")
     if ohd_plc == "n":

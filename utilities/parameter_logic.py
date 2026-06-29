@@ -1,17 +1,22 @@
 # ===========================
-# logic for parameters v0.2
+# logic for parameters v0.3
 # ===========================
 
 
 def sorteer_parameters(param_list):
     """
     Sorteert parameters alfabetisch,
-    maar zorgt dat parameter p.991 altijd bovenaan staat, voor het laden bij een slagboom vereist.
+    maar zorgt dat parameter p.999 altijd bovenaan staat,
+    gevolgd door p.991 (voor laden bij een slagboom vereist).
     """
     def sort_key(item):
         code = item[0].lower()
+
+        if code == "0999":
+            return ("", "")   # allerhoogste prioriteit
         if code == "0991":
-            return ("", "")  # komt vóór alles
+            return ("", "1")  # direct na 0999
+
         return ("1", code)
 
     return sorted(param_list, key=sort_key)

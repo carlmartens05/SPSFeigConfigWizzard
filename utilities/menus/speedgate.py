@@ -4,10 +4,11 @@ from .keuzemenu.keuzemenu_sg import *
 
 
 # ======================
-# Speedgates v0.3
+# Speedgates v0.4
 # ======================
 
 def sg_menu(config):
+    config.hoofd_parameter.append(("0999", "fc00"))
     sg_plc = input(
         "Wordt de speedgate aangestuurd door een PLC (y/n)? plc maar geen open/dicht/stop? kies nee  ").lower()
 
